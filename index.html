@@ -2,1003 +2,1390 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <title>PrePro Art ✿ Handmade Magic</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+
+<!--
+╔══════════════════════════════════════════════════════════════╗
+║            ✿  PrePro Art — PRODUCT CONFIGURATION  ✿         ║
+║                                                              ║
+║  HOW TO ADD / EDIT A PRODUCT — find the PRODS array below   ║
+║  in the <script> section. Each product looks like this:     ║
+║                                                              ║
+║  {                                                           ║
+║    id: 'p1',          ← unique id, don't repeat             ║
+║    cat: 'pipe',       ← 'pipe' | 'crochet' | 'gifts'       ║
+║                                                              ║
+║    ── IMAGES ─────────────────────────────────────────────  ║
+║    images: [                                                 ║
+║      'images/p1-1.jpg',   ← upload to GitHub /images/       ║
+║      'images/p1-2.jpg',   ← second swipe image (optional)   ║
+║      'images/p1-3.jpg',   ← third swipe image (optional)    ║
+║    ],                                                        ║
+║    emoji: '🌸',       ← shown if no image uploaded yet      ║
+║                                                              ║
+║    ── DETAILS ─────────────────────────────────────────────  ║
+║    name: 'Cherry Blossom Bouquet',                           ║
+║    shortDesc: 'Short one-line description for card',         ║
+║    fullDesc: 'Full paragraph shown on product page',         ║
+║    price: '₹ 299',    ← write 'Custom' for custom orders    ║
+║    oldPrice: '₹ 350', ← optional, shows strikethrough       ║
+║    newItem: true,     ← true = shows "New" badge            ║
+║                                                              ║
+║    ── OUT OF STOCK ────────────────────────────────────────  ║
+║    sold: true,        ← just change to true = sold out!     ║
+║                         false or leave out = in stock        ║
+║                                                              ║
+║    ── COLORS ──────────────────────────────────────────────  ║
+║    colors: [          ← color swatches on product page       ║
+║      { hex: '#f9a8c0', name: 'Blush Pink' },                ║
+║      { hex: '#ffffff', name: 'White' },                      ║
+║    ],                                                        ║
+║                                                              ║
+║    ── SPECS ───────────────────────────────────────────────  ║
+║    specs: {                                                  ║
+║      Size: '18–22 cm',                                       ║
+║      Material: 'Pipe Cleaners',                              ║
+║      Customisable: 'Yes',                                    ║
+║    },                                                        ║
+║                                                              ║
+║    ── WHATSAPP ─────────────────────────────────────────────║
+║    wa: 'Cherry+Blossom+Bouquet',  ← URL-encoded name        ║
+║    tags: ['flower','pink'],       ← for search              ║
+║  },                                                          ║
+║                                                              ║
+║  ── GITHUB VISITOR LOG ─────────────────────────────────── ║
+║  Visitor name/DOB data is posted to a GitHub Gist.          ║
+║  1. Create a GitHub Personal Access Token (classic) with    ║
+║     the 'gist' scope at: github.com/settings/tokens         ║
+║  2. Create a new SECRET Gist at: gist.github.com            ║
+║  3. Paste your token and Gist ID into the CONFIG below.     ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+-->
+const GITHUB_TOKEN = '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';
+const GIST_ID      = '208fb3cda5b0669ebcbab822978121a0';
+
 <style>
-:root{--pd:#f05a9e;--pl:#fef0f6;--pud:#9b59b6;--pus:#eeddf8;--bg:#fff9fc;--bg2:#fdf0ff;--bg3:#fff4f9;--card:#ffffff;--card2:#fef8ff;--txt:#3d1a55;--txtl:#9b7aad;--txtm:#d4b8e8;--bdr:#f0c8e0;--shd:rgba(155,89,182,.14);--nav:rgba(255,249,252,.92);--grad:linear-gradient(135deg,#f05a9e,#9b59b6)}
-[data-theme="dark"]{--pd:#e0509a;--pl:#2a0d22;--pud:#c77dff;--pus:#1e0830;--bg:#0d0318;--bg2:#130525;--bg3:#100420;--card:#180630;--card2:#1d0838;--txt:#f0dcff;--txtl:#b89fd4;--txtm:#5a3880;--bdr:#3a1458;--shd:rgba(199,125,255,.16);--nav:rgba(13,3,24,.92);--grad:linear-gradient(135deg,#e0509a,#c77dff)}
+/* ── VARIABLES ── */
+:root{
+  --pd:#f05a9e;--pl:#fef0f6;--pud:#9b59b6;--pus:#eeddf8;
+  --bg:#fff9fc;--bg2:#fdf0ff;--bg3:#fff4f9;
+  --card:#ffffff;--card2:#fef8ff;
+  --txt:#3d1a55;--txtl:#9b7aad;--txtm:#d4b8e8;
+  --bdr:#f0c8e0;--shd:rgba(155,89,182,.13);
+  --nav:rgba(255,249,252,.94);
+  --grad:linear-gradient(135deg,#f05a9e,#9b59b6);
+  --radius:20px;
+}
+[data-theme="dark"]{
+  --pd:#e0509a;--pl:#2a0d22;--pud:#c77dff;--pus:#1e0830;
+  --bg:#0d0318;--bg2:#130525;--bg3:#100420;
+  --card:#180630;--card2:#1d0838;
+  --txt:#f0dcff;--txtl:#b89fd4;--txtm:#5a3880;
+  --bdr:#3a1458;--shd:rgba(199,125,255,.15);
+  --nav:rgba(13,3,24,.93);
+  --grad:linear-gradient(135deg,#e0509a,#c77dff);
+}
+
+/* ── RESET ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;min-height:100vh;transition:background .4s,color .4s}
+img{max-width:100%;display:block}
+button,input,select,textarea{font-family:inherit}
+a{color:inherit;text-decoration:none}
+
+/* ── PETALS ── */
 #petals-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.petal{position:absolute;opacity:0;animation:petalfall linear infinite}
-@keyframes petalfall{0%{transform:translateY(-80px) rotate(0deg) translateX(0);opacity:0}8%{opacity:.8}50%{transform:translateY(50vh) rotate(200deg) translateX(40px)}92%{opacity:.5}100%{transform:translateY(115vh) rotate(400deg) translateX(-30px);opacity:0}}
+.petal{position:absolute;opacity:0;animation:petalfall linear infinite;border-radius:50% 0 50% 0}
+@keyframes petalfall{
+  0%{transform:translateY(-80px) rotate(0deg);opacity:0}
+  8%{opacity:.7}50%{transform:translateY(50vh) rotate(200deg) translateX(30px)}
+  92%{opacity:.4}100%{transform:translateY(110vh) rotate(400deg) translateX(-20px);opacity:0}
+}
 
-/* ONBOARDING OVERLAY */
-#onboarding{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fef0f6,#eeddf8,#fff4f9);overflow:hidden}
-#onboarding.hidden{display:none}
-.ob-petals{position:absolute;inset:0;pointer-events:none}
-.ob-box{background:#fff;border-radius:32px;padding:2.8rem 2.4rem;max-width:440px;width:92%;box-shadow:0 24px 64px rgba(155,89,182,.22);position:relative;z-index:1;text-align:center;animation:obIn .6s cubic-bezier(.34,1.56,.64,1) both}
-@keyframes obIn{from{opacity:0;transform:scale(.85) translateY(30px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.ob-step{display:none}
-.ob-step.active{display:block;animation:fadeUp .4s ease both}
-.ob-flowers{font-size:2.4rem;letter-spacing:6px;margin-bottom:1rem;display:block}
-.ob-title{font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--pud);margin-bottom:.5rem;line-height:1.2}
-.ob-title em{font-style:italic;color:var(--pd)}
-.ob-sub{font-size:.9rem;color:var(--txtl);line-height:1.7;margin-bottom:1.6rem}
-.ob-input{width:100%;padding:14px 20px;border:2.5px solid var(--bdr);border-radius:50px;font-family:'Nunito',sans-serif;font-size:1rem;color:var(--txt);background:#fef8ff;outline:none;text-align:center;transition:border-color .2s,box-shadow .2s;margin-bottom:1rem}
-.ob-input:focus{border-color:var(--pd);box-shadow:0 0 0 4px rgba(240,90,158,.12)}
-.ob-input::placeholder{color:var(--txtm)}
-.ob-btn{width:100%;padding:14px;border-radius:50px;border:none;background:var(--grad);color:#fff;font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;transition:transform .2s,box-shadow .2s;margin-bottom:.7rem}
-.ob-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(240,90,158,.35)}
-.ob-btn-skip{background:transparent;border:2px solid var(--bdr);color:var(--txtl);font-size:.85rem;padding:10px;width:100%;border-radius:50px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;transition:border-color .2s}
-.ob-btn-skip:hover{border-color:var(--pd);color:var(--pd)}
-.ob-avatar-row{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;margin-bottom:1.4rem}
-.ob-avatar{font-size:2.2rem;cursor:pointer;padding:.4rem;border-radius:50%;border:3px solid transparent;transition:border-color .2s,transform .2s}
-.ob-avatar:hover,.ob-avatar.selected{border-color:var(--pd);transform:scale(1.15);background:var(--pl)}
-.ob-quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1.3rem}
-.ob-qopt{padding:.9rem .7rem;border-radius:16px;border:2px solid var(--bdr);background:#fef8ff;cursor:pointer;font-weight:700;font-size:.83rem;color:var(--txt);transition:all .2s;text-align:center;font-family:'Nunito',sans-serif}
-.ob-qopt:hover{border-color:var(--pd);background:var(--pl);color:var(--pud)}
-.ob-qopt.selected{border-color:var(--pd);background:var(--grad);color:#fff}
-.ob-progress{display:flex;gap:.4rem;justify-content:center;margin-bottom:1.4rem}
-.ob-dot{width:10px;height:10px;border-radius:50%;background:var(--bdr);transition:background .3s}
-.ob-dot.done{background:var(--pd)}
-.ob-welcome-name{font-family:'Playfair Display',serif;font-size:2.2rem;font-style:italic;color:var(--pd)}
+/* ── ONBOARDING ── */
+#ob{position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fef0f6,#eeddf8,#fff4f9);overflow:hidden}
+#ob.gone{display:none}
+.ob-deco{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.ob-box{background:#fff;border-radius:28px;padding:2.6rem 2.2rem;max-width:420px;width:92%;box-shadow:0 24px 60px rgba(155,89,182,.22);position:relative;z-index:1;text-align:center;animation:popIn .6s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes popIn{from{opacity:0;transform:scale(.82) translateY(28px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.ob-step{display:none}.ob-step.on{display:block;animation:fadeUp .38s ease both}
+.ob-flowers{font-size:2.2rem;letter-spacing:6px;margin-bottom:.9rem;display:block}
+.ob-h{font-family:'Playfair Display',serif;font-size:1.85rem;color:var(--pud);line-height:1.2;margin-bottom:.5rem}
+.ob-h em{font-style:italic;color:var(--pd)}
+.ob-p{font-size:.88rem;color:#9b7aad;line-height:1.7;margin-bottom:1.5rem}
+.ob-inp{width:100%;padding:13px 18px;border:2.5px solid #f0c8e0;border-radius:50px;font-size:.97rem;color:#3d1a55;background:#fef8ff;outline:none;text-align:center;transition:border-color .2s,box-shadow .2s;margin-bottom:.9rem}
+.ob-inp:focus{border-color:#f05a9e;box-shadow:0 0 0 4px rgba(240,90,158,.1)}
+.ob-inp::placeholder{color:#d4b8e8}
+.ob-btn{width:100%;padding:13px;border-radius:50px;border:none;background:linear-gradient(135deg,#f05a9e,#9b59b6);color:#fff;font-weight:800;font-size:.97rem;cursor:pointer;margin-bottom:.6rem;transition:transform .2s,box-shadow .2s}
+.ob-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(240,90,158,.32)}
+.ob-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.ob-skip{background:transparent;border:2px solid #f0c8e0;color:#9b7aad;font-size:.83rem;padding:9px;width:100%;border-radius:50px;cursor:pointer;transition:border-color .2s;font-weight:700}
+.ob-skip:hover{border-color:#f05a9e;color:#f05a9e}
+.ob-avs{display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap;margin-bottom:1.3rem}
+.ob-av{font-size:2rem;cursor:pointer;padding:.35rem;border-radius:50%;border:3px solid transparent;transition:all .2s}
+.ob-av:hover,.ob-av.on{border-color:#f05a9e;background:#fef0f6;transform:scale(1.15)}
+.ob-vibes{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-bottom:1.2rem}
+.ob-vibe{padding:.85rem .6rem;border-radius:14px;border:2px solid #f0c8e0;background:#fef8ff;cursor:pointer;font-weight:700;font-size:.82rem;color:#3d1a55;transition:all .2s;font-family:'Nunito',sans-serif}
+.ob-vibe:hover{border-color:#f05a9e;background:#fef0f6;color:#9b59b6}
+.ob-vibe.on{border-color:#f05a9e;background:linear-gradient(135deg,#f05a9e,#9b59b6);color:#fff}
+.ob-prog{display:flex;gap:.4rem;justify-content:center;margin-bottom:1.2rem}
+.ob-dot{width:9px;height:9px;border-radius:50%;background:#f0c8e0;transition:background .3s}
+.ob-dot.on{background:#f05a9e}
+.ob-welcome-av{font-size:3.5rem;margin-bottom:.5rem}
+.ob-welcome-name{font-family:'Playfair Display',serif;font-style:italic;color:#f05a9e;font-size:2rem}
 
-/* NAV */
-nav{position:sticky;top:0;z-index:600;background:var(--nav);backdrop-filter:blur(20px);border-bottom:1.5px solid var(--bdr);padding:0 2rem;height:62px;display:flex;align-items:center;justify-content:space-between;transition:background .4s,border-color .4s}
-.nav-logo{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--pud);display:flex;align-items:center;gap:6px;cursor:pointer;text-decoration:none}
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:600;background:var(--nav);backdrop-filter:blur(20px);border-bottom:1.5px solid var(--bdr);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 1.4rem;transition:background .4s,border-color .4s}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--pud);display:flex;align-items:center;gap:5px;cursor:pointer}
 .nav-logo span{color:var(--pd)}
-.nav-logo .sub{font-size:.78rem;color:var(--txtl);font-family:'Nunito',sans-serif;font-weight:700}
-.nav-right{display:flex;align-items:center;gap:.5rem}
-.nav-links{display:flex;gap:1.4rem;list-style:none}
-.nav-links a{text-decoration:none;color:var(--txtl);font-weight:700;font-size:.84rem;transition:color .2s;position:relative}
+.nav-logo small{font-size:.72rem;color:var(--txtl);font-family:'Nunito',sans-serif;font-weight:700}
+.nav-right{display:flex;align-items:center;gap:.45rem}
+.nav-links{display:flex;gap:1.3rem;list-style:none}
+.nav-links a{color:var(--txtl);font-weight:700;font-size:.82rem;transition:color .2s;position:relative}
 .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--pd);border-radius:2px;transition:width .3s}
 .nav-links a:hover{color:var(--pd)}
 .nav-links a:hover::after{width:100%}
-.icon-btn{width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.95rem;background:var(--pus);color:var(--pud);transition:background .2s,transform .2s;position:relative}
-.icon-btn:hover{transform:scale(1.15);background:var(--pd);color:#fff}
-.badge{position:absolute;top:-4px;right:-4px;background:var(--pd);color:#fff;font-size:.56rem;font-weight:800;width:16px;height:16px;border-radius:50%;display:none;align-items:center;justify-content:center}
-.badge.show{display:flex}
-/* profile avatar in nav */
-.nav-avatar{width:36px;height:36px;border-radius:50%;border:2.5px solid var(--pd);display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;background:var(--pl);transition:transform .2s,border-color .2s}
-.nav-avatar:hover{transform:scale(1.12);border-color:var(--pud)}
+.icon-btn{width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;background:var(--pus);color:var(--pud);transition:background .2s,transform .2s;position:relative;flex-shrink:0}
+.icon-btn:hover{transform:scale(1.14);background:var(--pd);color:#fff}
+.badge{position:absolute;top:-4px;right:-4px;background:var(--pd);color:#fff;font-size:.55rem;font-weight:800;width:16px;height:16px;border-radius:50%;display:none;align-items:center;justify-content:center}
+.badge.on{display:flex}
+.nav-av{width:36px;height:36px;border-radius:50%;border:2.5px solid var(--pd);display:flex;align-items:center;justify-content:center;font-size:1.15rem;cursor:pointer;background:var(--pl);transition:transform .2s;flex-shrink:0}
+.nav-av:hover{transform:scale(1.1)}
 
-/* PAGES */
+/* ── PAGES ── */
 .page{display:none}
-.page.active{display:block;animation:pgIn .4s ease}
-@keyframes pgIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.page.on{display:block;animation:pgIn .38s ease}
+@keyframes pgIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
-/* HERO */
-.hero{position:relative;z-index:1;min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:5rem 2rem 3rem;overflow:hidden;background:radial-gradient(ellipse at 15% 25%,#f9c4d235,transparent 50%),radial-gradient(ellipse at 85% 75%,#c39bd325,transparent 50%),radial-gradient(ellipse at 50% 50%,var(--bg3),var(--bg) 80%)}
-#sparkleCanvas{position:absolute;inset:0;pointer-events:none;z-index:0}
-.hero-inner{position:relative;z-index:2}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--grad);color:#fff;font-size:.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:6px 18px;border-radius:50px;margin-bottom:1.2rem;animation:fadeUp .6s ease both}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.7rem,7vw,5.5rem);line-height:1.1;color:var(--pud);animation:fadeUp .7s .08s ease both}
+/* ── HERO ── */
+.hero{position:relative;z-index:1;min-height:88vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4.5rem 1.5rem 3rem;overflow:hidden;background:radial-gradient(ellipse at 15% 25%,#f9c4d232,transparent 50%),radial-gradient(ellipse at 85% 75%,#c39bd328,transparent 50%),radial-gradient(ellipse at 50% 50%,var(--bg3),var(--bg) 80%)}
+#sparkC{position:absolute;inset:0;pointer-events:none;z-index:0}
+.hero-inner{position:relative;z-index:2;max-width:600px;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:5px;background:var(--grad);color:#fff;font-size:.68rem;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;padding:5px 16px;border-radius:50px;margin-bottom:1.1rem}
+#heroGreet{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--pd);font-style:italic;margin-bottom:.5rem;min-height:1.4rem}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,6.5vw,5rem);line-height:1.1;color:var(--pud);margin-bottom:.9rem}
 .hero h1 em{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:.97rem;color:var(--txtl);max-width:420px;margin:1rem auto 2rem;line-height:1.75;animation:fadeUp .7s .16s ease both}
-.hero-flowers{font-size:2.2rem;letter-spacing:8px;margin-bottom:1.1rem;animation:fadeUp .7s .1s ease both;display:block}
-.hero-btns{display:flex;gap:.9rem;flex-wrap:wrap;justify-content:center;animation:fadeUp .7s .24s ease both}
-#heroGreet{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--pd);margin-bottom:.6rem;animation:fadeUp .6s ease both;font-style:italic;min-height:1.5rem}
+.hero-sub{font-size:.93rem;color:var(--txtl);max-width:400px;margin:0 auto 1.8rem;line-height:1.75}
+.hero-btns{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center}
 
-/* MARQUEE */
-.marquee-wrap{overflow:hidden;background:var(--grad);padding:9px 0;white-space:nowrap;position:relative;z-index:1}
-.marquee-inner{display:inline-block;animation:marquee 28s linear infinite;color:#fff;font-size:.78rem;font-weight:800;letter-spacing:2px;text-transform:uppercase}
-.marquee-inner span{margin:0 1.8rem}
-@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* ── MARQUEE ── */
+.mq-wrap{overflow:hidden;background:var(--grad);padding:8px 0;white-space:nowrap;position:relative;z-index:1}
+.mq{display:inline-block;animation:mq 28s linear infinite;color:#fff;font-size:.76rem;font-weight:800;letter-spacing:1.8px;text-transform:uppercase}
+.mq span{margin:0 1.6rem}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* BTNS */
-.btn{padding:11px 24px;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;text-decoration:none;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;display:inline-flex;align-items:center;gap:5px}
-.btn:hover{transform:translateY(-3px);box-shadow:0 10px 26px var(--shd)}
-.btn-primary{background:var(--grad);color:#fff;box-shadow:0 4px 16px rgba(240,90,158,.3)}
+/* ── BUTTONS ── */
+.btn{padding:11px 22px;border-radius:50px;font-weight:800;font-size:.86rem;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--shd)}
+.btn-primary{background:var(--grad);color:#fff;box-shadow:0 4px 14px rgba(240,90,158,.28)}
 .btn-secondary{background:var(--card);color:var(--pud);border:2px solid #c39bd3}
-.btn-wa{background:#25D366;color:#fff}
-.btn-ig{background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af,#515bd4);color:#fff}
-.btn-ghost{background:transparent;border:2px solid var(--bdr);color:var(--txtl);font-size:.82rem}
+.btn-wa{background:#25D366;color:#fff;box-shadow:0 4px 12px rgba(37,211,102,.28)}
+.btn-ig{background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af);color:#fff}
+.btn-sm{padding:8px 16px;font-size:.78rem}
+.btn-ghost{background:transparent;border:2px solid var(--bdr);color:var(--txtl)}
 .btn-ghost:hover{border-color:var(--pd);color:var(--pd)}
 
-/* SECTION */
+/* ── SECTIONS ── */
 section{position:relative;z-index:1}
-.section-title{text-align:center;margin-bottom:2.5rem}
-.section-title h2{font-family:'Playfair Display',serif;font-size:clamp(1.65rem,4vw,2.4rem);color:var(--pud);margin-bottom:.3rem}
-.section-title p{color:var(--txtl);font-size:.88rem}
-.section-title .deco{display:block;font-size:1.2rem;letter-spacing:5px;margin-bottom:.5rem}
+.sec-title{text-align:center;margin-bottom:2.3rem}
+.sec-title h2{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.3rem);color:var(--pud);margin-bottom:.28rem}
+.sec-title p{color:var(--txtl);font-size:.86rem}
+.sec-title .deco{display:block;font-size:1.1rem;letter-spacing:5px;margin-bottom:.45rem}
+.sec-pad{padding:3.2rem 1.4rem}
 
-/* SEARCH */
-.search-wrap{position:relative;z-index:1;padding:2rem 2rem 0;display:flex;justify-content:center;background:var(--bg3);transition:background .4s}
-.search-box{display:flex;align-items:center;gap:.6rem;background:var(--card);border:2px solid var(--bdr);border-radius:50px;padding:.65rem 1.3rem;width:100%;max-width:460px;box-shadow:0 4px 18px var(--shd);transition:border-color .2s}
+/* ── SEARCH ── */
+.search-wrap{padding:1.8rem 1.4rem 0;display:flex;justify-content:center;background:var(--bg3);position:relative;z-index:1;transition:background .4s}
+.search-box{display:flex;align-items:center;gap:.55rem;background:var(--card);border:2px solid var(--bdr);border-radius:50px;padding:.62rem 1.25rem;width:100%;max-width:460px;box-shadow:0 4px 16px var(--shd);transition:border-color .2s}
 .search-box:focus-within{border-color:var(--pd)}
-.search-box input{border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:.9rem;color:var(--txt);width:100%;outline:none}
+.search-box input{border:none;background:transparent;font-size:.88rem;color:var(--txt);width:100%;outline:none}
 .search-box input::placeholder{color:var(--txtm)}
 
-/* CATS */
-.categories{padding:3.5rem 2rem;background:var(--bg2);transition:background .4s}
-.cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.4rem;max-width:840px;margin:0 auto}
-.cat-card{background:var(--card);border-radius:22px;padding:1.9rem 1.3rem;text-align:center;border:2px solid transparent;box-shadow:0 4px 18px var(--shd);cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;overflow:hidden}
-.cat-card:hover{transform:translateY(-7px);border-color:var(--pd);box-shadow:0 14px 34px rgba(240,90,158,.2)}
-.cat-icon{font-size:2.9rem;margin-bottom:.7rem;display:block;transition:transform .3s}
-.cat-card:hover .cat-icon{transform:scale(1.18) rotate(-5deg)}
-.cat-card h3{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--pud);margin-bottom:.28rem}
-.cat-card p{font-size:.8rem;color:var(--txtl);line-height:1.6}
+/* ── CATEGORY CARDS ── */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:1.3rem;max-width:820px;margin:0 auto}
+.cat-card{background:var(--card);border-radius:20px;padding:1.8rem 1.2rem;text-align:center;border:2px solid transparent;box-shadow:0 4px 16px var(--shd);cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;overflow:hidden;position:relative}
+.cat-card:hover{transform:translateY(-6px);border-color:var(--pd);box-shadow:0 12px 30px rgba(240,90,158,.18)}
+.cat-card .ci{font-size:2.8rem;margin-bottom:.65rem;display:block;transition:transform .3s}
+.cat-card:hover .ci{transform:scale(1.18) rotate(-5deg)}
+.cat-card h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--pud);margin-bottom:.25rem}
+.cat-card p{font-size:.78rem;color:var(--txtl);line-height:1.6}
 
-/* PRODUCTS */
-.products-section{padding:3.5rem 2rem;background:var(--bg3);transition:background .4s}
-.products-filter{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;margin-bottom:2.2rem}
-.filter-btn{padding:7px 17px;border-radius:50px;border:2px solid #c39bd3;background:transparent;color:var(--pud);font-family:'Nunito',sans-serif;font-weight:800;font-size:.78rem;cursor:pointer;transition:all .2s}
-.filter-btn.active,.filter-btn:hover{background:var(--grad);color:#fff;border-color:transparent;transform:scale(1.05)}
-.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(214px,1fr));gap:1.5rem;max-width:1080px;margin:0 auto}
-.no-results{text-align:center;padding:3rem;color:var(--txtl);font-size:.97rem;grid-column:1/-1}
-.product-card{background:var(--card);border-radius:20px;overflow:hidden;box-shadow:0 4px 18px var(--shd);transition:transform .25s,box-shadow .25s;display:flex;flex-direction:column;cursor:pointer;position:relative}
-.product-card:hover{transform:translateY(-7px);box-shadow:0 16px 38px rgba(155,89,182,.22)}
-.product-card::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transform:skewX(-20deg);transition:left .55s ease;pointer-events:none}
-.product-card:hover::after{left:160%}
-.product-img-wrap{width:100%;aspect-ratio:1/1;background:linear-gradient(135deg,var(--pl),var(--pus));display:flex;align-items:center;justify-content:center;font-size:4.4rem;position:relative;overflow:hidden;transition:background .4s}
-.product-img-wrap img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
-.new-badge{position:absolute;top:10px;left:10px;z-index:5;background:var(--grad);color:#fff;font-size:.6rem;font-weight:800;letter-spacing:1px;padding:3px 9px;border-radius:50px;text-transform:uppercase}
-.like-btn{position:absolute;top:10px;right:10px;z-index:10;width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;background:rgba(255,255,255,.88);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;font-size:.95rem;transition:transform .2s,background .2s;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+/* ── PRODUCT GRID ── */
+.prod-section{padding:3.2rem 1.4rem;background:var(--bg3);transition:background .4s}
+.filter-row{display:flex;gap:.55rem;flex-wrap:wrap;justify-content:center;margin-bottom:2rem}
+.fbtn{padding:6px 15px;border-radius:50px;border:2px solid #c39bd3;background:transparent;color:var(--pud);font-weight:800;font-size:.76rem;cursor:pointer;transition:all .2s}
+.fbtn.on,.fbtn:hover{background:var(--grad);color:#fff;border-color:transparent;transform:scale(1.04)}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.4rem;max-width:1060px;margin:0 auto}
+.no-res{text-align:center;padding:3rem;color:var(--txtl);grid-column:1/-1;font-size:.94rem}
+
+/* ── PRODUCT CARD ── */
+.prod-card{background:var(--card);border-radius:18px;overflow:hidden;box-shadow:0 4px 16px var(--shd);transition:transform .25s,box-shadow .25s;display:flex;flex-direction:column;cursor:pointer;position:relative;-webkit-user-select:none;user-select:none}
+.prod-card:hover{transform:translateY(-6px);box-shadow:0 14px 34px rgba(155,89,182,.2)}
+/* shimmer */
+.prod-card::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);transform:translateX(-100%) skewX(-20deg);transition:transform .55s;pointer-events:none}
+.prod-card:hover::after{transform:translateX(200%) skewX(-20deg)}
+
+/* ── CARD IMAGE SWIPER ── */
+.card-img{width:100%;aspect-ratio:1/1;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--pl),var(--pus));transition:background .4s}
+.card-slides{display:flex;height:100%;transition:transform .35s cubic-bezier(.4,0,.2,1);will-change:transform}
+.card-slide{min-width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:4.2rem;flex-shrink:0;position:relative}
+.card-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card-dots{position:absolute;bottom:7px;left:0;right:0;display:flex;justify-content:center;gap:4px;z-index:4}
+.card-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.5);transition:background .2s,transform .2s}
+.card-dot.on{background:#fff;transform:scale(1.3)}
+.sold-overlay{position:absolute;inset:0;background:rgba(0,0,0,.48);display:flex;align-items:center;justify-content:center;z-index:6;backdrop-filter:blur(2px)}
+.sold-overlay span{background:#fff;color:#3d1a55;font-weight:800;font-size:.82rem;letter-spacing:2px;padding:6px 16px;border-radius:50px;text-transform:uppercase}
+.new-badge{position:absolute;top:9px;left:9px;z-index:5;background:var(--grad);color:#fff;font-size:.58rem;font-weight:800;letter-spacing:.8px;padding:3px 8px;border-radius:50px;text-transform:uppercase}
+.sale-badge{position:absolute;top:9px;left:9px;z-index:5;background:#e74c3c;color:#fff;font-size:.58rem;font-weight:800;letter-spacing:.8px;padding:3px 8px;border-radius:50px;text-transform:uppercase}
+.like-btn{position:absolute;top:9px;right:9px;z-index:10;width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;background:rgba(255,255,255,.88);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:transform .2s,background .2s;box-shadow:0 2px 7px rgba(0,0,0,.12)}
 .like-btn:hover{transform:scale(1.22)}
-.like-btn.liked{background:var(--pd);animation:heartPop .35s ease}
-@keyframes heartPop{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(1)}}
-.product-body{padding:1rem;flex:1;display:flex;flex-direction:column}
-.product-cat{font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--pd);margin-bottom:.2rem}
-.product-name{font-family:'Playfair Display',serif;font-size:.96rem;color:var(--txt);margin-bottom:.22rem;line-height:1.3}
-.product-desc-short{font-size:.77rem;color:var(--txtl);line-height:1.5;flex:1}
-.product-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.8rem;padding-top:.7rem;border-top:1.5px dashed var(--bdr)}
-.product-price{font-family:'Playfair Display',serif;font-size:1.03rem;font-weight:700;color:var(--pud)}
-.view-btn{padding:6px 13px;background:var(--grad);color:#fff;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.74rem;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s}
-.view-btn:hover{transform:scale(1.07);box-shadow:0 4px 14px rgba(240,90,158,.4)}
+.like-btn.on{background:var(--pd);animation:hpop .35s ease}
+@keyframes hpop{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(1)}}
+.prod-body{padding:.95rem;flex:1;display:flex;flex-direction:column}
+.prod-cat{font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:1.4px;color:var(--pd);margin-bottom:.18rem}
+.prod-name{font-family:'Playfair Display',serif;font-size:.92rem;color:var(--txt);margin-bottom:.2rem;line-height:1.3}
+.prod-desc{font-size:.75rem;color:var(--txtl);line-height:1.5;flex:1}
+.prod-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.75rem;padding-top:.65rem;border-top:1.5px dashed var(--bdr)}
+.prod-price{display:flex;align-items:baseline;gap:.35rem}
+.prod-price strong{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--pud)}
+.prod-price del{font-size:.76rem;color:var(--txtm)}
+.view-btn{padding:5px 12px;background:var(--grad);color:#fff;border-radius:50px;font-weight:800;font-size:.72rem;border:none;cursor:pointer;transition:transform .2s}
+.view-btn:hover{transform:scale(1.07)}
 
-/* PRODUCT DETAIL */
-.detail-wrap{padding:2rem;max-width:960px;margin:0 auto;position:relative;z-index:1}
-.back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--txtl);font-weight:800;font-size:.84rem;background:var(--card);border:2px solid var(--bdr);border-radius:50px;padding:8px 17px;cursor:pointer;margin-bottom:1.8rem;transition:all .2s;font-family:'Nunito',sans-serif;box-shadow:0 2px 10px var(--shd)}
+/* ── PRODUCT DETAIL ── */
+.detail-wrap{padding:1.8rem 1.4rem;max-width:880px;margin:0 auto;position:relative;z-index:1}
+.back-btn{display:inline-flex;align-items:center;gap:5px;color:var(--txtl);font-weight:800;font-size:.82rem;background:var(--card);border:2px solid var(--bdr);border-radius:50px;padding:7px 16px;cursor:pointer;margin-bottom:1.6rem;transition:all .2s;font-family:'Nunito',sans-serif;box-shadow:0 2px 8px var(--shd)}
 .back-btn:hover{color:var(--pd);background:var(--pl)}
-.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.4rem;align-items:start}
-@media(max-width:660px){.detail-grid{grid-template-columns:1fr}}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.2rem;align-items:start}
+@media(max-width:620px){.detail-grid{grid-template-columns:1fr}}
 
-/* SWIPEABLE GALLERY */
-.gallery-outer{position:relative;border-radius:26px;overflow:hidden;box-shadow:0 10px 40px var(--shd);background:var(--pl);touch-action:pan-y;}
-.gallery-track{display:flex;transition:transform .38s cubic-bezier(.4,0,.2,1);will-change:transform}
-.gallery-slide{min-width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:7.5rem;position:relative;transition:background .5s;flex-shrink:0}
-.gallery-slide img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:0}
-.gallery-prev,.gallery-next{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,.85);backdrop-filter:blur(6px);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.15);transition:background .2s,transform .2s;color:var(--pud)}
-.gallery-prev{left:10px}
-.gallery-next{right:10px}
-.gallery-prev:hover,.gallery-next:hover{background:#fff;transform:translateY(-50%) scale(1.1)}
-.gallery-dots{display:flex;gap:.4rem;justify-content:center;margin-top:.7rem}
-.gallery-dot{width:7px;height:7px;border-radius:50%;background:var(--bdr);cursor:pointer;transition:background .2s,transform .2s}
-.gallery-dot.active{background:var(--pd);transform:scale(1.3)}
-/* swipe hint */
-.swipe-hint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.38);color:#fff;font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:50px;letter-spacing:1px;pointer-events:none;opacity:1;transition:opacity .5s;white-space:nowrap}
-.swipe-hint.gone{opacity:0}
+/* ── DETAIL IMAGE SWIPER ── */
+.detail-swiper{border-radius:24px;overflow:hidden;background:linear-gradient(135deg,var(--pl),var(--pus));box-shadow:0 10px 36px var(--shd);position:relative;aspect-ratio:1/1;touch-action:pan-y;transition:background .4s}
+.detail-slides{display:flex;height:100%;transition:transform .38s cubic-bezier(.4,0,.2,1)}
+.detail-slide{min-width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:6.5rem;flex-shrink:0;position:relative}
+.detail-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.swipe-prev,.swipe-next{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:34px;height:34px;border-radius:50%;border:none;background:rgba(255,255,255,.85);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;font-size:.9rem;cursor:pointer;transition:background .2s,transform .2s;box-shadow:0 2px 8px rgba(0,0,0,.14)}
+.swipe-prev{left:10px}.swipe-next{right:10px}
+.swipe-prev:hover,.swipe-next:hover{background:#fff;transform:translateY(-50%) scale(1.1)}
+.detail-dots{display:flex;gap:5px;justify-content:center;margin-top:.7rem}
+.detail-dot{width:7px;height:7px;border-radius:50%;background:var(--bdr);transition:background .2s,transform .2s;cursor:pointer}
+.detail-dot.on{background:var(--pd);transform:scale(1.3)}
+.thumb-strip{display:flex;gap:.5rem;margin-top:.6rem;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.thumb-strip::-webkit-scrollbar{display:none}
+.thumb{width:52px;height:52px;border-radius:10px;overflow:hidden;border:2.5px solid transparent;cursor:pointer;transition:border-color .2s,transform .2s;flex-shrink:0;background:linear-gradient(135deg,var(--pl),var(--pus));display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb.on,.thumb:hover{border-color:var(--pd);transform:scale(1.07)}
 
-/* COLOR PREVIEW BADGE */
-.color-name-badge{display:inline-block;font-size:.72rem;font-weight:800;color:var(--pud);background:var(--pus);padding:3px 12px;border-radius:50px;margin-bottom:.5rem;transition:all .3s}
+.detail-info{}
+.detail-cat-tag{display:inline-block;background:var(--pus);color:var(--pud);font-size:.64rem;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;padding:3px 11px;border-radius:50px;margin-bottom:.6rem}
+.detail-name{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,3vw,1.95rem);color:var(--pud);line-height:1.2;margin-bottom:.5rem}
+.stars-row{display:flex;align-items:center;gap:.35rem;margin-bottom:.75rem}
+.stars{color:#f7c948;font-size:.88rem;letter-spacing:1px}
+.rat-ct{font-size:.74rem;color:var(--txtl)}
+.detail-price-row{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.25rem}
+.detail-price{font-family:'Playfair Display',serif;font-size:1.85rem;color:var(--pud);font-weight:700}
+.detail-price-old{font-size:1rem;color:var(--txtm);text-decoration:line-through}
+.detail-price small{font-size:.82rem;color:var(--txtl);font-family:'Nunito',sans-serif;font-weight:400}
 
-.detail-cat-tag{display:inline-block;background:var(--pus);color:var(--pud);font-size:.67rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:50px;margin-bottom:.65rem}
-.detail-name{font-family:'Playfair Display',serif;font-size:clamp(1.35rem,3vw,2rem);color:var(--pud);line-height:1.2;margin-bottom:.55rem}
-.detail-price{font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--pud);font-weight:700;margin-bottom:.3rem}
-.detail-price small{font-size:.85rem;color:var(--txtl);font-weight:400;font-family:'Nunito',sans-serif}
-.stars-row{display:flex;align-items:center;gap:.4rem;margin-bottom:.85rem}
-.stars{color:#f7c948;font-size:.92rem}
-.rating-count{font-size:.76rem;color:var(--txtl)}
-.detail-like-btn{display:inline-flex;align-items:center;gap:6px;background:var(--card2);border:2px solid var(--bdr);border-radius:50px;padding:7px 17px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:.81rem;color:var(--txtl);margin-bottom:1rem;transition:all .2s}
-.detail-like-btn:hover,.detail-like-btn.liked{background:var(--pd);color:#fff;border-color:transparent}
-.order-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--txtm);margin-bottom:.55rem}
-.order-opts{display:flex;gap:.65rem;flex-wrap:wrap;margin-bottom:1.3rem}
+/* color swatch — actually changes bg */
+.color-section{margin-bottom:1rem}
+.color-section label{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--txtl);display:block;margin-bottom:.4rem}
+.color-row{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
+.cswatch{width:26px;height:26px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .2s,border-color .2s;box-shadow:0 2px 6px rgba(0,0,0,.14)}
+.cswatch:hover,.cswatch.on{transform:scale(1.18);border-color:var(--txt)}
+.color-name-display{font-size:.76rem;color:var(--txtl);font-weight:700;margin-left:.4rem}
 
-/* WORKING COLOR DOTS */
-.color-section{margin-bottom:1.1rem}
-.color-section label{font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--txtl);display:block;margin-bottom:.45rem}
-.color-dots{display:flex;gap:.55rem;flex-wrap:wrap;align-items:center}
-.color-dot{width:30px;height:30px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .2s,border-color .2s,box-shadow .2s;box-shadow:0 2px 8px rgba(0,0,0,.18);position:relative}
-.color-dot::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#fff;opacity:0;font-weight:900;text-shadow:0 1px 2px rgba(0,0,0,.4)}
-.color-dot:hover{transform:scale(1.18)}
-.color-dot.active{border-color:var(--txt);transform:scale(1.22);box-shadow:0 0 0 3px var(--pd)}
-.color-dot.active::after{opacity:1}
+.detail-like-btn{display:inline-flex;align-items:center;gap:5px;background:var(--card2);border:2px solid var(--bdr);border-radius:50px;padding:7px 16px;cursor:pointer;font-weight:800;font-size:.79rem;color:var(--txtl);margin-bottom:.95rem;transition:all .2s}
+.detail-like-btn:hover,.detail-like-btn.on{background:var(--pd);color:#fff;border-color:transparent}
+.detail-stock{display:inline-flex;align-items:center;gap:5px;font-size:.76rem;font-weight:700;padding:4px 12px;border-radius:50px;margin-bottom:.9rem}
+.in-stock{background:#e8f8f0;color:#2ecc71}
+.out-stock{background:#fde8e8;color:#e74c3c}
+.order-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1.8px;color:var(--txtm);margin-bottom:.5rem}
+.order-btns{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.detail-desc h4{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--pud);margin-bottom:.4rem}
+.detail-desc p{font-size:.83rem;color:var(--txtl);line-height:1.75}
+.specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-top:.8rem}
+.spec-item{background:var(--bg2);border-radius:10px;padding:.55rem .8rem;transition:background .4s}
+.spec-lbl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--pd);margin-bottom:.1rem}
+.spec-val{font-size:.8rem;color:var(--txt);font-weight:700}
+.related-sec{padding:2rem 1.4rem;background:var(--bg2);transition:background .4s}
 
-.detail-desc-section{margin-top:1.1rem;padding-top:1rem;border-top:1.5px solid var(--bdr)}
-.detail-desc-section h4{font-family:'Playfair Display',serif;font-size:.97rem;color:var(--pud);margin-bottom:.45rem}
-.detail-desc-section p{font-size:.84rem;color:var(--txtl);line-height:1.75}
-.specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin-top:.85rem}
-.spec-item{background:var(--bg2);border-radius:11px;padding:.6rem .85rem;transition:background .4s}
-.spec-label{font-size:.63rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--pd);margin-bottom:.13rem}
-.spec-value{font-size:.82rem;color:var(--txt);font-weight:700}
-.related-section{padding:2.2rem;background:var(--bg2);transition:background .4s}
+/* ── WISHLIST ── */
+.wl-page{padding:2.2rem 1.4rem;max-width:1060px;margin:0 auto;position:relative;z-index:1}
+.wl-empty{text-align:center;padding:4rem 2rem;color:var(--txtl)}
+.wl-empty .ei{font-size:3.5rem;margin-bottom:.9rem;display:block}
 
-/* WISHLIST */
-.wishlist-page{padding:2.5rem 2rem;max-width:1080px;margin:0 auto;position:relative;z-index:1}
-.wishlist-empty{text-align:center;padding:4.5rem 2rem;color:var(--txtl)}
-.wishlist-empty .icon{font-size:4rem;margin-bottom:1rem;display:block}
+/* ── PROFILE ── */
+.prof-page{padding:2.2rem 1.4rem;max-width:580px;margin:0 auto;position:relative;z-index:1}
+.prof-header{background:var(--grad);border-radius:22px;padding:2.2rem 1.8rem;text-align:center;color:#fff;margin-bottom:1.5rem;position:relative;overflow:hidden}
+.prof-header::before{content:'🌸🌺🌸';position:absolute;top:-8px;right:-8px;font-size:2.8rem;opacity:.14;pointer-events:none}
+.prof-av-big{font-size:3.2rem;background:rgba(255,255,255,.2);width:74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;border:3px solid rgba(255,255,255,.45);cursor:pointer;transition:transform .2s}
+.prof-av-big:hover{transform:scale(1.07)}
+.prof-name{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;margin-bottom:.22rem}
+.prof-vibe-tag{background:rgba(255,255,255,.22);border-radius:50px;padding:3px 12px;font-size:.76rem;font-weight:700;display:inline-block}
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem;margin-bottom:1.3rem}
+.stat-card{background:var(--card);border-radius:14px;padding:1.1rem;text-align:center;box-shadow:0 4px 12px var(--shd)}
+.stat-n{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--pd);font-weight:700}
+.stat-l{font-size:.68rem;color:var(--txtl);font-weight:700;text-transform:uppercase;letter-spacing:.8px}
+.pcard{background:var(--card);border-radius:18px;padding:1.4rem;box-shadow:0 4px 12px var(--shd);margin-bottom:1rem}
+.pcard h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--pud);margin-bottom:.9rem;display:flex;align-items:center;gap:.4rem}
+.frow{margin-bottom:.8rem}
+.frow label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.9px;color:var(--txtl);display:block;margin-bottom:.32rem}
+.finp{width:100%;padding:10px 15px;border:2px solid var(--bdr);border-radius:11px;font-size:.88rem;color:var(--txt);background:var(--bg2);outline:none;transition:border-color .2s}
+.finp:focus{border-color:var(--pd)}
+.finp::placeholder{color:var(--txtm)}
+.av-picker{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.35rem}
+.av-opt{font-size:1.55rem;cursor:pointer;padding:.28rem;border-radius:50%;border:2.5px solid transparent;transition:all .2s}
+.av-opt:hover,.av-opt.on{border-color:var(--pd);background:var(--pl);transform:scale(1.12)}
+.vibe-tags{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.35rem}
+.vtag{padding:5px 13px;border-radius:50px;border:2px solid var(--bdr);font-size:.76rem;font-weight:700;color:var(--txtl);cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif}
+.vtag:hover,.vtag.on{background:var(--grad);color:#fff;border-color:transparent}
+.save-btn{width:100%;padding:13px;border-radius:50px;background:var(--grad);color:#fff;border:none;font-weight:800;font-size:.93rem;cursor:pointer;transition:transform .2s,box-shadow .2s;margin-top:.3rem}
+.save-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(240,90,158,.32)}
+.reset-btn{width:100%;padding:10px;border-radius:50px;background:transparent;color:var(--txtl);border:2px solid var(--bdr);font-weight:800;font-size:.82rem;cursor:pointer;margin-top:.55rem;transition:all .2s}
+.reset-btn:hover{border-color:#e74c3c;color:#e74c3c}
 
-/* PROFILE PAGE */
-.profile-page{padding:2.5rem 2rem;max-width:600px;margin:0 auto;position:relative;z-index:1}
-.profile-header{background:var(--grad);border-radius:24px;padding:2.4rem 2rem;text-align:center;color:#fff;margin-bottom:1.6rem;position:relative;overflow:hidden}
-.profile-header::before{content:'🌸🌺🌸';position:absolute;top:-10px;right:-10px;font-size:3rem;opacity:.15;pointer-events:none}
-.profile-avatar-big{font-size:3.5rem;background:rgba(255,255,255,.2);width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto .8rem;border:3px solid rgba(255,255,255,.5);cursor:pointer;transition:transform .2s}
-.profile-avatar-big:hover{transform:scale(1.08)}
-.profile-name-display{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;margin-bottom:.25rem}
-.profile-vibe-tag{background:rgba(255,255,255,.22);border-radius:50px;padding:4px 14px;font-size:.78rem;font-weight:700;letter-spacing:1px;display:inline-block}
-.profile-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.4rem}
-.stat-card{background:var(--card);border-radius:16px;padding:1.2rem;text-align:center;box-shadow:0 4px 14px var(--shd)}
-.stat-num{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--pd);font-weight:700}
-.stat-label{font-size:.72rem;color:var(--txtl);font-weight:700;text-transform:uppercase;letter-spacing:1px}
-.profile-card{background:var(--card);border-radius:20px;padding:1.5rem;box-shadow:0 4px 14px var(--shd);margin-bottom:1.1rem}
-.profile-card h3{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--pud);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
-.form-row{margin-bottom:.85rem}
-.form-row label{font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--txtl);display:block;margin-bottom:.35rem}
-.form-input{width:100%;padding:10px 16px;border:2px solid var(--bdr);border-radius:12px;font-family:'Nunito',sans-serif;font-size:.9rem;color:var(--txt);background:var(--bg2);outline:none;transition:border-color .2s}
-.form-input:focus{border-color:var(--pd)}
-.form-input::placeholder{color:var(--txtm)}
-.avatar-picker{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.4rem}
-.av-opt{font-size:1.6rem;cursor:pointer;padding:.3rem;border-radius:50%;border:2.5px solid transparent;transition:all .2s}
-.av-opt:hover,.av-opt.selected{border-color:var(--pd);background:var(--pl);transform:scale(1.12)}
-.vibe-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.4rem}
-.vibe-tag{padding:5px 14px;border-radius:50px;border:2px solid var(--bdr);font-size:.78rem;font-weight:700;color:var(--txtl);cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif}
-.vibe-tag:hover,.vibe-tag.selected{background:var(--grad);color:#fff;border-color:transparent}
-.save-profile-btn{width:100%;padding:13px;border-radius:50px;background:var(--grad);color:#fff;border:none;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;transition:transform .2s,box-shadow .2s;margin-top:.4rem}
-.save-profile-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(240,90,158,.35)}
-.logout-btn{width:100%;padding:11px;border-radius:50px;background:transparent;color:var(--txtl);border:2px solid var(--bdr);font-family:'Nunito',sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;transition:all .2s;margin-top:.6rem}
-.logout-btn:hover{border-color:#e74c3c;color:#e74c3c}
-
-/* WHY */
-.why{padding:3.8rem 2rem;background:var(--bg2);text-align:center;transition:background .4s}
-.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:1.3rem;max-width:800px;margin:0 auto}
-.why-card{background:var(--card);border-radius:18px;padding:1.6rem 1.1rem;box-shadow:0 4px 14px var(--shd);border-top:4px solid var(--pd);transition:transform .2s}
+/* ── WHY + TESTI + CTA ── */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.2rem;max-width:780px;margin:0 auto}
+.why-card{background:var(--card);border-radius:16px;padding:1.5rem 1rem;box-shadow:0 4px 12px var(--shd);border-top:4px solid var(--pd);transition:transform .2s;text-align:center}
 .why-card:hover{transform:translateY(-5px)}
-.why-card .icon{font-size:2.1rem;margin-bottom:.55rem}
-.why-card h4{font-family:'Playfair Display',serif;font-size:.97rem;color:var(--pud);margin-bottom:.28rem}
-.why-card p{font-size:.77rem;color:var(--txtl);line-height:1.6}
-.testimonials{padding:3.8rem 2rem;background:var(--bg3);transition:background .4s}
-.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:1.3rem;max-width:860px;margin:0 auto}
-.testi-card{background:var(--card);border-radius:18px;padding:1.4rem;box-shadow:0 4px 14px var(--shd);border-left:4px solid var(--pud);transition:transform .2s}
+.why-card .wi{font-size:2rem;margin-bottom:.5rem}
+.why-card h4{font-family:'Playfair Display',serif;font-size:.93rem;color:var(--pud);margin-bottom:.25rem}
+.why-card p{font-size:.75rem;color:var(--txtl);line-height:1.6}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(218px,1fr));gap:1.2rem;max-width:840px;margin:0 auto}
+.testi-card{background:var(--card);border-radius:16px;padding:1.3rem;box-shadow:0 4px 12px var(--shd);border-left:4px solid var(--pud);transition:transform .2s}
 .testi-card:hover{transform:translateY(-4px)}
-.testi-stars{color:#f7c948;font-size:.85rem;margin-bottom:.45rem}
-.testi-text{font-size:.82rem;color:var(--txtl);line-height:1.65;margin-bottom:.65rem;font-style:italic}
-.testi-author{font-size:.76rem;font-weight:800;color:var(--pud)}
-.cta-section{padding:4.5rem 2rem;background:var(--grad);text-align:center;color:#fff;position:relative;z-index:1;overflow:hidden}
-.cta-section::before{content:'🌸🌺🌼🌸🌼🌺🌸';font-size:5rem;opacity:.07;position:absolute;top:-20px;left:0;right:0;text-align:center;letter-spacing:20px;pointer-events:none}
-.cta-section h2{font-family:'Playfair Display',serif;font-size:clamp(1.75rem,4vw,2.4rem);margin-bottom:.65rem}
-.cta-section p{opacity:.9;font-size:.93rem;margin-bottom:1.7rem;line-height:1.75}
-.cta-btns{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+.testi-stars{color:#f7c948;font-size:.82rem;margin-bottom:.4rem}
+.testi-txt{font-size:.8rem;color:var(--txtl);line-height:1.65;margin-bottom:.6rem;font-style:italic}
+.testi-auth{font-size:.74rem;font-weight:800;color:var(--pud)}
+.cta-sec{padding:4.2rem 1.4rem;background:var(--grad);text-align:center;color:#fff;position:relative;z-index:1;overflow:hidden}
+.cta-sec::before{content:'🌸🌺🌼🌸🌼🌺🌸';font-size:4.5rem;opacity:.07;position:absolute;top:-16px;left:0;right:0;text-align:center;letter-spacing:18px;pointer-events:none}
+.cta-sec h2{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,4vw,2.3rem);margin-bottom:.6rem}
+.cta-sec p{opacity:.9;font-size:.9rem;margin-bottom:1.6rem;line-height:1.75}
+.cta-btns{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
 
-/* TOAST */
-.toast{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(14px);background:var(--pud);color:#fff;padding:9px 20px;border-radius:50px;font-size:.81rem;font-weight:800;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:3000;white-space:nowrap}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* ── TOAST ── */
+.toast{position:fixed;bottom:4.5rem;left:50%;transform:translateX(-50%) translateY(14px);background:var(--pud);color:#fff;padding:8px 18px;border-radius:50px;font-size:.79rem;font-weight:800;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:4000;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* CONFETTI */
-.confetti-piece{position:fixed;pointer-events:none;z-index:9000;animation:confettiFall linear forwards}
-@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+/* ── CONFETTI ── */
+.cf{position:fixed;pointer-events:none;z-index:5000;animation:cfall linear forwards}
+@keyframes cfall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 
-/* FLOATING CAT */
-#floatCat{position:fixed;bottom:5rem;right:1.4rem;z-index:700;font-size:2.3rem;cursor:pointer;animation:catFloat 3s ease-in-out infinite;filter:drop-shadow(0 4px 8px rgba(0,0,0,.18));transition:transform .2s;user-select:none}
+/* ── CAT ── */
+#floatCat{position:fixed;bottom:4.8rem;right:1.2rem;z-index:700;font-size:2.2rem;cursor:pointer;animation:catfloat 3s ease-in-out infinite;filter:drop-shadow(0 3px 7px rgba(0,0,0,.16));user-select:none;transition:transform .2s}
 #floatCat:hover{transform:scale(1.2) rotate(-10deg)}
-@keyframes catFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-#catBubble{position:fixed;bottom:8.6rem;right:3.8rem;z-index:700;background:var(--card);border:2px solid var(--bdr);border-radius:16px 16px 4px 16px;padding:.55rem .95rem;font-size:.76rem;font-weight:700;color:var(--pud);box-shadow:0 4px 16px var(--shd);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;transform:translateY(8px);max-width:176px;line-height:1.4}
-#catBubble.show{opacity:1;transform:translateY(0)}
+@keyframes catfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+#catBub{position:fixed;bottom:8.4rem;right:3.5rem;z-index:700;background:var(--card);border:2px solid var(--bdr);border-radius:14px 14px 3px 14px;padding:.5rem .9rem;font-size:.74rem;font-weight:700;color:var(--pud);box-shadow:0 4px 14px var(--shd);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;transform:translateY(8px);max-width:170px;line-height:1.4}
+#catBub.on{opacity:1;transform:translateY(0)}
 
-/* SCROLL TOP */
-#scrollTop{position:fixed;bottom:1.8rem;right:1.8rem;z-index:600;width:40px;height:40px;background:var(--grad);border:none;border-radius:50%;color:#fff;font-size:.9rem;cursor:pointer;box-shadow:0 4px 14px var(--shd);opacity:0;pointer-events:none;transition:opacity .3s,transform .2s;display:flex;align-items:center;justify-content:center}
-#scrollTop.show{opacity:1;pointer-events:all}
-#scrollTop:hover{transform:scale(1.12)}
+/* ── SCROLL TOP ── */
+#sTop{position:fixed;bottom:1.6rem;right:1.6rem;z-index:600;width:38px;height:38px;background:var(--grad);border:none;border-radius:50%;color:#fff;font-size:.85rem;cursor:pointer;box-shadow:0 4px 12px var(--shd);opacity:0;pointer-events:none;transition:opacity .3s,transform .2s;display:flex;align-items:center;justify-content:center}
+#sTop.on{opacity:1;pointer-events:all}
+#sTop:hover{transform:scale(1.1)}
 
-/* FOOTER */
-footer{background:var(--txt);color:rgba(255,255,255,.7);text-align:center;padding:2rem;font-size:.8rem;line-height:1.8;position:relative;z-index:1}
+/* ── FOOTER ── */
+footer{background:var(--txt);color:rgba(255,255,255,.68);text-align:center;padding:1.8rem 1.4rem;font-size:.78rem;line-height:1.8;position:relative;z-index:1}
 footer strong{color:#fff}
 footer a{text-decoration:none}
 
-/* ANIMS */
-@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
-.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
+/* ── ANIMS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+.reveal.vis{opacity:1;transform:translateY(0)}
 
-/* MOBILE */
-@media(max-width:600px){.nav-links{display:none}nav{padding:0 1rem}.hero h1{font-size:2.4rem}.products-grid{grid-template-columns:repeat(2,1fr);gap:.85rem}.detail-wrap{padding:1.1rem}.ob-quiz-opts{grid-template-columns:1fr}.profile-stats{grid-template-columns:1fr 1fr}}
+/* ── RESPONSIVE ── */
+@media(max-width:680px){
+  .nav-links{display:none}
+  nav{padding:0 1rem}
+  .hero h1{font-size:2.35rem}
+  .prod-grid{grid-template-columns:repeat(2,1fr);gap:.85rem}
+  .prod-body{padding:.8rem}
+  .detail-wrap{padding:1rem}
+  .specs-grid{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .ob-vibes{grid-template-columns:1fr}
+}
+@media(max-width:400px){
+  .prod-grid{grid-template-columns:repeat(2,1fr);gap:.65rem}
+  .ob-box{padding:2rem 1.5rem}
+}
+@media(min-width:1200px){
+  .prod-grid{grid-template-columns:repeat(4,1fr)}
+}
 </style>
 </head>
 <body>
+
 <div id="petals-bg"></div>
 <div class="toast" id="toast"></div>
 <div id="floatCat" onclick="catClick()">🐱</div>
-<div id="catBubble"></div>
-<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div id="catBub"></div>
+<button id="sTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-<!-- ═══════════ ONBOARDING ═══════════ -->
-<div id="onboarding">
-  <div class="ob-petals" id="obPetals"></div>
+<!-- ══════════════════════════════════════
+     ONBOARDING
+══════════════════════════════════════ -->
+<div id="ob">
+  <div class="ob-deco" id="obDeco"></div>
   <div class="ob-box">
-    <!-- Step 1: Welcome + Name -->
-    <div class="ob-step active" id="obStep0">
+
+    <!-- Step 0: Name -->
+    <div class="ob-step on" id="obs0">
       <span class="ob-flowers">🌸 🌺 🌸</span>
-      <h2 class="ob-title">Welcome to<br/><em>PrePro Art</em></h2>
-      <p class="ob-sub">Handmade pipe cleaner art, dreamy crochet & heartfelt gifts ✨<br/>What should we call you?</p>
-      <input class="ob-input" id="obNameInput" type="text" placeholder="Your name..." maxlength="20" oninput="checkNameBtn()" onkeydown="if(event.key==='Enter')obNext0()"/>
-      <button class="ob-btn" id="obNameBtn" onclick="obNext0()" style="opacity:.5;pointer-events:none">Let's Go! 🌸</button>
-      <button class="ob-btn-skip" onclick="obSkip()">Skip for now</button>
+      <h2 class="ob-h">Welcome to<br/><em>PrePro Art</em></h2>
+      <p class="ob-p">Handmade pipe cleaner art, dreamy crochet &amp; heartfelt gifts ✨<br/>What should we call you?</p>
+      <input class="ob-inp" id="obName" type="text" placeholder="Your name..." maxlength="22" autocomplete="given-name" oninput="obNameCheck()"/>
+      <button class="ob-btn" id="obNameBtn" onclick="obGo0()" disabled>Let's Go! 🌸</button>
+      <button class="ob-skip" onclick="obSkip()">Skip for now</button>
     </div>
-    <!-- Step 2: Pick Avatar -->
-    <div class="ob-step" id="obStep1">
-      <div class="ob-progress"><div class="ob-dot done" id="pd0"></div><div class="ob-dot" id="pd1"></div><div class="ob-dot" id="pd2"></div></div>
-      <span class="ob-flowers" style="font-size:1.6rem">✨</span>
-      <h2 class="ob-title" style="font-size:1.5rem">Pick your <em>avatar</em></h2>
-      <p class="ob-sub" style="margin-bottom:1rem">Choose a little icon that feels like you!</p>
-      <div class="ob-avatar-row" id="obAvatarRow">
-        <span class="ob-avatar" data-av="🌸" onclick="pickAvatar(this)">🌸</span>
-        <span class="ob-avatar" data-av="🦋" onclick="pickAvatar(this)">🦋</span>
-        <span class="ob-avatar" data-av="🐱" onclick="pickAvatar(this)">🐱</span>
-        <span class="ob-avatar" data-av="🌺" onclick="pickAvatar(this)">🌺</span>
-        <span class="ob-avatar" data-av="🧸" onclick="pickAvatar(this)">🧸</span>
-        <span class="ob-avatar" data-av="✨" onclick="pickAvatar(this)">✨</span>
-        <span class="ob-avatar" data-av="🎀" onclick="pickAvatar(this)">🎀</span>
-        <span class="ob-avatar" data-av="🌙" onclick="pickAvatar(this)">🌙</span>
+
+    <!-- Step 1: Birthday -->
+    <div class="ob-step" id="obs1">
+      <div class="ob-prog"><div class="ob-dot on"></div><div class="ob-dot" id="opd1"></div><div class="ob-dot" id="opd2"></div></div>
+      <span class="ob-flowers" style="font-size:1.6rem">🎂</span>
+      <h2 class="ob-h" style="font-size:1.45rem">When's your <em>birthday</em>?</h2>
+      <p class="ob-p" style="margin-bottom:1rem">We'll send a little surprise on your special day 🎀<br/><small style="opacity:.7">(optional)</small></p>
+      <input class="ob-inp" id="obBday" type="date" style="text-align:left;padding-left:1.2rem"/>
+      <button class="ob-btn" onclick="obGo1()">Next ✿</button>
+      <button class="ob-skip" onclick="obGo1()">Skip birthday</button>
+    </div>
+
+    <!-- Step 2: Avatar -->
+    <div class="ob-step" id="obs2">
+      <div class="ob-prog"><div class="ob-dot on"></div><div class="ob-dot on"></div><div class="ob-dot" id="opd2b"></div></div>
+      <span class="ob-flowers" style="font-size:1.5rem">✨</span>
+      <h2 class="ob-h" style="font-size:1.4rem">Pick your <em>avatar</em></h2>
+      <p class="ob-p" style="margin-bottom:.85rem">Choose a little icon that feels like you!</p>
+      <div class="ob-avs" id="obAvRow">
+        <span class="ob-av" data-av="🌸" onclick="obPickAv(this)">🌸</span>
+        <span class="ob-av" data-av="🦋" onclick="obPickAv(this)">🦋</span>
+        <span class="ob-av" data-av="🐱" onclick="obPickAv(this)">🐱</span>
+        <span class="ob-av" data-av="🌺" onclick="obPickAv(this)">🌺</span>
+        <span class="ob-av" data-av="🧸" onclick="obPickAv(this)">🧸</span>
+        <span class="ob-av" data-av="✨" onclick="obPickAv(this)">✨</span>
+        <span class="ob-av" data-av="🎀" onclick="obPickAv(this)">🎀</span>
+        <span class="ob-av" data-av="🌙" onclick="obPickAv(this)">🌙</span>
       </div>
-      <button class="ob-btn" onclick="obNext1()">Next ✿</button>
+      <button class="ob-btn" onclick="obGo2()">Next ✿</button>
     </div>
-    <!-- Step 3: Vibe Quiz -->
-    <div class="ob-step" id="obStep2">
-      <div class="ob-progress"><div class="ob-dot done"></div><div class="ob-dot done" id="pd1b"></div><div class="ob-dot" id="pd2b"></div></div>
-      <span style="font-size:1.8rem;display:block;margin-bottom:.5rem">💜</span>
-      <h2 class="ob-title" style="font-size:1.4rem">What's your <em>vibe</em>?</h2>
-      <p class="ob-sub" style="margin-bottom:.9rem">We'll personalise your experience!</p>
-      <div class="ob-quiz-opts" id="obVibeOpts">
-        <button class="ob-qopt" data-v="soft" onclick="pickVibe(this)">🌸 Soft & Dreamy</button>
-        <button class="ob-qopt" data-v="bold" onclick="pickVibe(this)">🦋 Bold & Sparkly</button>
-        <button class="ob-qopt" data-v="cozy" onclick="pickVibe(this)">🧸 Cozy & Sweet</button>
-        <button class="ob-qopt" data-v="gifter" onclick="pickVibe(this)">🎁 I Love Gifting</button>
+
+    <!-- Step 3: Vibe -->
+    <div class="ob-step" id="obs3">
+      <div class="ob-prog"><div class="ob-dot on"></div><div class="ob-dot on"></div><div class="ob-dot on"></div></div>
+      <span style="font-size:1.7rem;display:block;margin-bottom:.45rem">💜</span>
+      <h2 class="ob-h" style="font-size:1.35rem">What's your <em>vibe</em>?</h2>
+      <p class="ob-p" style="margin-bottom:.85rem">We'll personalise your shop experience!</p>
+      <div class="ob-vibes">
+        <button class="ob-vibe" data-v="soft" onclick="obPickVibe(this)">🌸 Soft &amp; Dreamy</button>
+        <button class="ob-vibe" data-v="bold" onclick="obPickVibe(this)">🦋 Bold &amp; Sparkly</button>
+        <button class="ob-vibe" data-v="cozy" onclick="obPickVibe(this)">🧸 Cozy &amp; Sweet</button>
+        <button class="ob-vibe" data-v="gifter" onclick="obPickVibe(this)">🎁 I Love Gifting</button>
       </div>
-      <button class="ob-btn" id="vibeNextBtn" style="opacity:.5;pointer-events:none;margin-top:.5rem" onclick="obFinish()">Finish &amp; Enter 🎉</button>
+      <button class="ob-btn" id="obVibeBtn" onclick="obFinish()" disabled>Enter the Shop 🎉</button>
     </div>
-    <!-- Step 4: Welcome back! -->
-    <div class="ob-step" id="obStep3">
+
+    <!-- Step 4: Welcome -->
+    <div class="ob-step" id="obs4">
       <span class="ob-flowers">🎉 🌸 🎉</span>
-      <div id="obWelcomeAvatar" style="font-size:3.5rem;margin-bottom:.5rem">🌸</div>
-      <h2 class="ob-title">Hey, <span class="ob-welcome-name" id="obWelcomeName"></span>!</h2>
-      <p class="ob-sub">Your profile is ready. Let's explore some magic ✨</p>
+      <div class="ob-welcome-av" id="obWelcomeAv">🌸</div>
+      <h2 class="ob-h">Hey, <span class="ob-welcome-name" id="obWelcomeNm"></span>!</h2>
+      <p class="ob-p">Your profile is ready. Time for some magic ✨</p>
       <button class="ob-btn" onclick="enterSite()">Enter the Shop 🛍️</button>
     </div>
+
   </div>
 </div>
 
-<!-- ═══════════ NAV ═══════════ -->
+<!-- ══════════════════════════════════════
+     NAV
+══════════════════════════════════════ -->
 <nav>
-  <a class="nav-logo" onclick="showPage('home')" href="#">✿ <span>Pre</span>Pro <span class="sub">Art</span></a>
+  <a class="nav-logo" onclick="showPage('home')" href="#">✿ <span>Pre</span>Pro <small>Art</small></a>
   <ul class="nav-links">
-    <li><a href="#" onclick="gotoSection('categories')">Shop</a></li>
-    <li><a href="#" onclick="gotoSection('products')">Products</a></li>
-    <li><a href="#" onclick="gotoSection('why')">About</a></li>
-    <li><a href="#" onclick="gotoSection('cta')">Order</a></li>
+    <li><a href="#" onclick="goSec('categories')">Shop</a></li>
+    <li><a href="#" onclick="goSec('products')">Products</a></li>
+    <li><a href="#" onclick="goSec('why')">About</a></li>
+    <li><a href="#" onclick="goSec('cta')">Order</a></li>
   </ul>
   <div class="nav-right">
     <button class="icon-btn" onclick="showPage('wishlist')" title="Wishlist" style="position:relative">🤍<span class="badge" id="wlBadge">0</span></button>
-    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
-    <div class="nav-avatar" id="navAvatar" onclick="showPage('profile')" title="Profile">🌸</div>
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Theme">🌙</button>
+    <div class="nav-av" id="navAv" onclick="showPage('profile')" title="Profile">🌸</div>
   </div>
 </nav>
 
-<!-- ═══════════ HOME PAGE ═══════════ -->
-<div class="page active" id="page-home">
-  <div id="greetBanner" style="position:relative;z-index:1;background:var(--grad);color:#fff;text-align:center;padding:9px 2rem;font-size:.85rem;font-weight:700;letter-spacing:.4px"></div>
+<!-- ══════════════════════════════════════
+     HOME
+══════════════════════════════════════ -->
+<div class="page on" id="page-home">
+  <div id="greetBar" style="position:relative;z-index:1;background:var(--grad);color:#fff;text-align:center;padding:8px 1.4rem;font-size:.83rem;font-weight:700;letter-spacing:.3px;min-height:36px"></div>
   <section class="hero">
-    <canvas id="sparkleCanvas"></canvas>
+    <canvas id="sparkC"></canvas>
     <div class="hero-inner">
       <div id="heroGreet"></div>
       <div class="hero-badge">✿ Handmade with Love in Every Stitch ✿</div>
-      <span class="hero-flowers">🌸 🌺 🌸 🌼 🌸</span>
       <h1>Where Cute<br/><em>Comes to Life</em></h1>
-      <p class="hero-sub">Pipe cleaner art, dreamy crochet and heartfelt gifts — each piece made with magic and a whole lot of love ✨</p>
+      <p class="hero-sub">Pipe cleaner art, dreamy crochet &amp; heartfelt gifts — each piece born from pure love ✨</p>
       <div class="hero-btns">
-        <button class="btn btn-primary" onclick="gotoSection('products')">🛍️ Shop Now</button>
+        <button class="btn btn-primary" onclick="goSec('products')">🛍️ Shop Now</button>
         <button class="btn btn-secondary" onclick="showPage('profile')">👤 My Profile</button>
       </div>
     </div>
   </section>
-  <div class="marquee-wrap">
-    <div class="marquee-inner">
-      <span>🌸 Pipe Cleaner Art</span><span>✿ Crochet Dreams</span><span>🎁 Handmade Gifts</span><span>💜 Made with Love</span><span>🌺 Kawaii Vibes</span><span>✨ Custom Orders</span><span>🐰 Keychains</span><span>🧸 Amigurumi</span><span>🎀 Gift Boxes</span><span>🌸 Pipe Cleaner Art</span><span>✿ Crochet Dreams</span><span>🎁 Handmade Gifts</span><span>💜 Made with Love</span><span>🌺 Kawaii Vibes</span><span>✨ Custom Orders</span><span>🐰 Keychains</span><span>🧸 Amigurumi</span><span>🎀 Gift Boxes</span>
-    </div>
-  </div>
-  <div class="search-wrap">
-    <div class="search-box">
-      <span>🔍</span>
-      <input type="text" id="searchInput" placeholder="Search... bunny, crochet, gift..." oninput="handleSearch(this.value)"/>
-    </div>
-  </div>
-  <section class="categories" id="categories">
-    <div class="section-title reveal"><span class="deco">🌼 🌸 🌼</span><h2>Browse by Category</h2><p>Pick your favourite handmade world</p></div>
+
+  <div class="mq-wrap"><div class="mq"><span>🌸 Pipe Cleaner Art</span><span>✿ Crochet Dreams</span><span>🎁 Handmade Gifts</span><span>💜 Made with Love</span><span>🌺 Kawaii Vibes</span><span>✨ Custom Orders</span><span>🐰 Keychains</span><span>🧸 Amigurumi</span><span>🎀 Gift Boxes</span><span>🌸 Pipe Cleaner Art</span><span>✿ Crochet Dreams</span><span>🎁 Handmade Gifts</span><span>💜 Made with Love</span><span>🌺 Kawaii Vibes</span><span>✨ Custom Orders</span><span>🐰 Keychains</span><span>🧸 Amigurumi</span><span>🎀 Gift Boxes</span></div></div>
+
+  <div class="search-wrap"><div class="search-box"><span>🔍</span><input type="search" id="srch" placeholder="Search bunny, crochet, gift..." oninput="doSearch(this.value)"/></div></div>
+
+  <section class="sec-pad" style="background:var(--bg2);transition:background .4s" id="categories">
+    <div class="sec-title reveal"><span class="deco">🌼 🌸 🌼</span><h2>Browse by Category</h2><p>Pick your favourite handmade world</p></div>
     <div class="cat-grid">
-      <div class="cat-card reveal" onclick="filterAndGo('pipe')"><span class="cat-icon">🌀</span><h3>Pipe Cleaner</h3><p>Fluffy animals, flowers and characters shaped by hand with love</p></div>
-      <div class="cat-card reveal" onclick="filterAndGo('crochet')"><span class="cat-icon">🧶</span><h3>Crochet</h3><p>Squishy amigurumi, charms and bookmarks stitched just for you</p></div>
-      <div class="cat-card reveal" onclick="filterAndGo('gifts')"><span class="cat-icon">🎁</span><h3>Gift Sets</h3><p>Curated handmade boxes for birthdays, besties and every occasion ✨</p></div>
+      <div class="cat-card reveal" onclick="filterGo('pipe')"><span class="ci">🌀</span><h3>Pipe Cleaner</h3><p>Fluffy animals, flowers &amp; characters shaped by hand</p></div>
+      <div class="cat-card reveal" onclick="filterGo('crochet')"><span class="ci">🧶</span><h3>Crochet</h3><p>Squishy amigurumi, charms &amp; bookmarks stitched with love</p></div>
+      <div class="cat-card reveal" onclick="filterGo('gifts')"><span class="ci">🎁</span><h3>Gift Sets</h3><p>Curated handmade boxes for birthdays &amp; besties ✨</p></div>
     </div>
   </section>
-  <section class="products-section" id="products">
-    <div class="section-title reveal"><span class="deco">🌺 🌸 🌺</span><h2 id="productsTitle">Our Collection</h2><p>Click any piece to explore and order 🛍️</p></div>
-    <div class="products-filter reveal">
-      <button class="filter-btn active" onclick="setFilter('all',this)">All ✿</button>
-      <button class="filter-btn" onclick="setFilter('pipe',this)">Pipe Cleaner 🌀</button>
-      <button class="filter-btn" onclick="setFilter('crochet',this)">Crochet 🧶</button>
-      <button class="filter-btn" onclick="setFilter('gifts',this)">Gifts 🎁</button>
+
+  <section class="prod-section" id="products">
+    <div class="sec-title reveal"><span class="deco">🌺 🌸 🌺</span><h2 id="prodTitle">Our Collection</h2><p>Click any piece to explore &amp; order</p></div>
+    <div class="filter-row reveal">
+      <button class="fbtn on" onclick="setFilter('all',this)">All ✿</button>
+      <button class="fbtn" onclick="setFilter('pipe',this)">Pipe Cleaner 🌀</button>
+      <button class="fbtn" onclick="setFilter('crochet',this)">Crochet 🧶</button>
+      <button class="fbtn" onclick="setFilter('gifts',this)">Gifts 🎁</button>
     </div>
-    <div class="products-grid" id="productGrid"></div>
+    <div class="prod-grid" id="prodGrid"></div>
   </section>
-  <section class="why" id="why">
-    <div class="section-title reveal"><span class="deco">💜 🌸 💜</span><h2>Why PrePro Art?</h2><p>Because every gift deserves a little soul in it</p></div>
+
+  <section class="sec-pad" style="background:var(--bg2);transition:background .4s" id="why">
+    <div class="sec-title reveal"><span class="deco">💜 🌸 💜</span><h2>Why PrePro Art?</h2><p>Because every gift deserves soul in it</p></div>
     <div class="why-grid">
-      <div class="why-card reveal"><div class="icon">🤲</div><h4>Handmade Always</h4><p>Never factory made — every piece is shaped and stitched by hand</p></div>
-      <div class="why-card reveal"><div class="icon">🎨</div><h4>Fully Custom</h4><p>Pick your colours, characters, sizes — made exactly your way</p></div>
-      <div class="why-card reveal"><div class="icon">💌</div><h4>With Heart</h4><p>Each order gets personal attention and sometimes a love note ✨</p></div>
-      <div class="why-card reveal"><div class="icon">⚡</div><h4>Fast DMs</h4><p>Order on WhatsApp or Instagram — no cart, just chat with us!</p></div>
+      <div class="why-card reveal"><div class="wi">🤲</div><h4>Handmade Always</h4><p>Never factory made — shaped &amp; stitched by hand, always</p></div>
+      <div class="why-card reveal"><div class="wi">🎨</div><h4>Fully Custom</h4><p>Your colours, characters, sizes — made exactly your way</p></div>
+      <div class="why-card reveal"><div class="wi">💌</div><h4>With Heart</h4><p>Personal attention + sometimes a handwritten love note ✨</p></div>
+      <div class="why-card reveal"><div class="wi">⚡</div><h4>Fast DMs</h4><p>Order on WhatsApp or Instagram — simple &amp; personal</p></div>
     </div>
   </section>
-  <section class="testimonials reveal">
-    <div class="section-title reveal"><span class="deco">⭐ 🌸 ⭐</span><h2>Customer Love</h2><p>Real people, real magic 💜</p></div>
+
+  <section class="sec-pad" style="background:var(--bg3);transition:background .4s">
+    <div class="sec-title reveal"><span class="deco">⭐ 🌸 ⭐</span><h2>Customer Love</h2><p>Real people, real magic 💜</p></div>
     <div class="testi-grid">
-      <div class="testi-card reveal"><div class="testi-stars">★★★★★</div><p class="testi-text">"The pipe cleaner bouquet made my friend cry happy tears. Absolutely stunning for the price 🌸"</p><div class="testi-author">— Priya M., Mumbai</div></div>
-      <div class="testi-card reveal"><div class="testi-stars">★★★★★</div><p class="testi-text">"Ordered a custom crochet bear and it arrived so fast. The quality is insane for handmade!"</p><div class="testi-author">— Sneha R., Pune</div></div>
-      <div class="testi-card reveal"><div class="testi-stars">★★★★★</div><p class="testi-text">"The birthday box was so beautifully packed 🎀 Everyone at the party wanted to know where I got it!"</p><div class="testi-author">— Aisha K., Delhi</div></div>
+      <div class="testi-card reveal"><div class="testi-stars">★★★★★</div><p class="testi-txt">"The pipe cleaner bouquet made my friend cry happy tears. Absolutely stunning for the price 🌸"</p><div class="testi-auth">— Priya M., Mumbai</div></div>
+      <div class="testi-card reveal"><div class="testi-stars">★★★★★</div><p class="testi-txt">"Ordered a custom crochet bear — arrived so fast. Quality is insane for handmade work!"</p><div class="testi-auth">— Sneha R., Pune</div></div>
+      <div class="testi-card reveal"><div class="testi-stars">★★★★★</div><p class="testi-txt">"The birthday box was beautifully packed 🎀 Everyone at the party wanted one!"</p><div class="testi-auth">— Aisha K., Delhi</div></div>
     </div>
   </section>
-  <section class="cta-section" id="cta">
-    <div style="font-size:2rem;letter-spacing:8px;margin-bottom:.9rem">🌸 🌺 🌸 🌼 🌸</div>
+
+  <section class="cta-sec" id="cta">
+    <div style="font-size:1.8rem;letter-spacing:7px;margin-bottom:.8rem">🌸 🌺 🌸 🌼 🌸</div>
     <h2>Ready to Order? ✨</h2>
-    <p>Chat with us directly — we love hearing your ideas!<br/>Custom orders always welcome 💜</p>
+    <p>Chat with us — we love hearing your ideas!<br/>Custom orders always welcome 💜</p>
     <div class="cta-btns">
-      <a class="btn btn-wa" href="https://wa.me/2182783582?text=Hi+PrePro+Art!+I+saw+your+website+and+would+love+to+order+%F0%9F%8C%B8" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp Us</a>
-      <a class="btn btn-ig" href="https://instagram.com/sarcasticayuu" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg> Instagram DM</a>
+      <a class="btn btn-wa" href="https://wa.me/2182783582?text=Hi+PrePro+Art!+I+saw+your+website+and+want+to+order+%F0%9F%8C%B8" target="_blank">💬 WhatsApp Us</a>
+      <a class="btn btn-ig" href="https://instagram.com/sarcasticayuu" target="_blank">📷 Instagram</a>
     </div>
   </section>
+
   <footer>
-    <div style="font-size:1rem;letter-spacing:5px;margin-bottom:.4rem">🌸 🌺 🌸 🌼 🌸</div>
+    <div style="font-size:.95rem;letter-spacing:5px;margin-bottom:.38rem">🌸 🌺 🌸 🌼 🌸</div>
     <div><strong>PrePro Art</strong> — Handmade with Love 💜</div>
     <div><a href="https://instagram.com/sarcasticayuu" style="color:#f9a8c0">@sarcasticayuu</a> · <a href="https://wa.me/2182783582" style="color:#7ddd99">WhatsApp</a></div>
-    <div style="opacity:.4;font-size:.7rem;margin-top:.3rem">© 2025 PrePro Art. Made with 💜 and infinite patience.</div>
+    <div style="opacity:.38;font-size:.68rem;margin-top:.28rem">© 2025 PrePro Art. Made with 💜 and infinite patience.</div>
   </footer>
 </div>
 
-<!-- ═══════════ PRODUCT DETAIL ═══════════ -->
+<!-- ══════════════════════════════════════
+     PRODUCT DETAIL
+══════════════════════════════════════ -->
 <div class="page" id="page-product">
   <div class="detail-wrap" id="detailContent"></div>
-  <section class="related-section" id="relatedSection">
-    <div class="section-title"><span class="deco">🌸 ✿ 🌸</span><h2>You Might Also Love</h2></div>
-    <div class="products-grid" id="relatedGrid" style="max-width:880px;margin:0 auto"></div>
+  <section class="related-sec">
+    <div class="sec-title"><span class="deco">🌸 ✿ 🌸</span><h2>You Might Also Love</h2></div>
+    <div class="prod-grid" id="relGrid" style="max-width:860px;margin:0 auto;padding:0 1.4rem 1rem"></div>
   </section>
-  <footer><div><strong>PrePro Art</strong> — Handmade with Love 💜</div><div><a href="https://instagram.com/sarcasticayuu" style="color:#f9a8c0">@sarcasticayuu</a> · <a href="https://wa.me/2182783582" style="color:#7ddd99">WhatsApp</a></div></footer>
+  <footer><div><strong>PrePro Art</strong></div><div><a href="https://instagram.com/sarcasticayuu" style="color:#f9a8c0">@sarcasticayuu</a> · <a href="https://wa.me/2182783582" style="color:#7ddd99">WhatsApp</a></div></footer>
 </div>
 
-<!-- ═══════════ WISHLIST ═══════════ -->
+<!-- WISHLIST -->
 <div class="page" id="page-wishlist">
-  <div class="wishlist-page">
-    <div class="section-title" style="margin-bottom:2rem"><span class="deco">💜 🌸 💜</span><h2>Your Wishlist</h2><p>Everything you saved with love 🤍</p></div>
-    <div id="wishlistContent"></div>
+  <div class="wl-page">
+    <div class="sec-title" style="margin-bottom:1.8rem"><span class="deco">💜 🌸 💜</span><h2>Your Wishlist</h2><p>Everything saved with love 🤍</p></div>
+    <div id="wlContent"></div>
   </div>
   <footer><div><strong>PrePro Art</strong> — Handmade with Love 💜</div></footer>
 </div>
 
-<!-- ═══════════ PROFILE PAGE ═══════════ -->
+<!-- PROFILE -->
 <div class="page" id="page-profile">
-  <div class="profile-page">
-    <button class="back-btn" onclick="showPage('home')" style="margin-bottom:1.4rem">← Back to Shop</button>
-    <div class="profile-header">
-      <div class="profile-avatar-big" id="profileAvatarBig" onclick="document.getElementById('avPickerSection').scrollIntoView({behavior:'smooth'})">🌸</div>
-      <div class="profile-name-display" id="profileNameDisplay">Your Name</div>
-      <div class="profile-vibe-tag" id="profileVibeTag">✨ Vibe: Not set</div>
+  <div class="prof-page">
+    <button class="back-btn" onclick="showPage('home')">← Back to Shop</button>
+    <div class="prof-header">
+      <div class="prof-av-big" id="profAvBig">🌸</div>
+      <div class="prof-name" id="profNameD">Your Name</div>
+      <div class="prof-vibe-tag" id="profVibeD">✨ Vibe: Not set</div>
     </div>
-    <div class="profile-stats">
-      <div class="stat-card"><div class="stat-num" id="statWL">0</div><div class="stat-label">Wishlisted</div></div>
-      <div class="stat-card"><div class="stat-num" id="statViews">0</div><div class="stat-label">Viewed</div></div>
-      <div class="stat-card"><div class="stat-num" id="statVisits">1</div><div class="stat-label">Visits</div></div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-n" id="stWL">0</div><div class="stat-l">Wishlisted</div></div>
+      <div class="stat-card"><div class="stat-n" id="stViews">0</div><div class="stat-l">Viewed</div></div>
+      <div class="stat-card"><div class="stat-n" id="stVisits">1</div><div class="stat-l">Visits</div></div>
     </div>
-    <div class="profile-card">
+    <div class="pcard">
       <h3>👤 Personal Info</h3>
-      <div class="form-row"><label>Display Name</label><input class="form-input" id="pfName" type="text" placeholder="Your name..." maxlength="24"/></div>
-      <div class="form-row"><label>Email (optional)</label><input class="form-input" id="pfEmail" type="email" placeholder="your@email.com"/></div>
-      <div class="form-row"><label>Birthday 🎂</label><input class="form-input" id="pfBday" type="date"/></div>
-      <div class="form-row"><label>Location</label><input class="form-input" id="pfCity" type="text" placeholder="City, State..."/></div>
+      <div class="frow"><label>Display Name</label><input class="finp" id="pfName" type="text" placeholder="Your name..." maxlength="24"/></div>
+      <div class="frow"><label>Email</label><input class="finp" id="pfEmail" type="email" placeholder="your@email.com"/></div>
+      <div class="frow"><label>Birthday 🎂</label><input class="finp" id="pfBday" type="date"/></div>
+      <div class="frow"><label>City / Location</label><input class="finp" id="pfCity" type="text" placeholder="City, State..."/></div>
     </div>
-    <div class="profile-card" id="avPickerSection">
-      <h3>🎨 Choose Avatar</h3>
-      <div class="avatar-picker" id="avPicker">
-        <span class="av-opt" data-av="🌸" onclick="setAvatar(this)">🌸</span>
-        <span class="av-opt" data-av="🦋" onclick="setAvatar(this)">🦋</span>
-        <span class="av-opt" data-av="🐱" onclick="setAvatar(this)">🐱</span>
-        <span class="av-opt" data-av="🌺" onclick="setAvatar(this)">🌺</span>
-        <span class="av-opt" data-av="🧸" onclick="setAvatar(this)">🧸</span>
-        <span class="av-opt" data-av="✨" onclick="setAvatar(this)">✨</span>
-        <span class="av-opt" data-av="🎀" onclick="setAvatar(this)">🎀</span>
-        <span class="av-opt" data-av="🌙" onclick="setAvatar(this)">🌙</span>
-        <span class="av-opt" data-av="🐰" onclick="setAvatar(this)">🐰</span>
-        <span class="av-opt" data-av="🍓" onclick="setAvatar(this)">🍓</span>
-        <span class="av-opt" data-av="🌈" onclick="setAvatar(this)">🌈</span>
-        <span class="av-opt" data-av="💜" onclick="setAvatar(this)">💜</span>
+    <div class="pcard">
+      <h3>🎨 Avatar</h3>
+      <div class="av-picker" id="avPicker">
+        <span class="av-opt" data-av="🌸" onclick="setAv(this)">🌸</span><span class="av-opt" data-av="🦋" onclick="setAv(this)">🦋</span><span class="av-opt" data-av="🐱" onclick="setAv(this)">🐱</span><span class="av-opt" data-av="🌺" onclick="setAv(this)">🌺</span><span class="av-opt" data-av="🧸" onclick="setAv(this)">🧸</span><span class="av-opt" data-av="✨" onclick="setAv(this)">✨</span><span class="av-opt" data-av="🎀" onclick="setAv(this)">🎀</span><span class="av-opt" data-av="🌙" onclick="setAv(this)">🌙</span><span class="av-opt" data-av="🐰" onclick="setAv(this)">🐰</span><span class="av-opt" data-av="🍓" onclick="setAv(this)">🍓</span><span class="av-opt" data-av="🌈" onclick="setAv(this)">🌈</span><span class="av-opt" data-av="💜" onclick="setAv(this)">💜</span>
       </div>
     </div>
-    <div class="profile-card">
+    <div class="pcard">
       <h3>✨ My Vibe</h3>
       <div class="vibe-tags" id="vibePicker">
-        <span class="vibe-tag" data-v="soft" onclick="setVibe(this)">🌸 Soft & Dreamy</span>
-        <span class="vibe-tag" data-v="bold" onclick="setVibe(this)">🦋 Bold & Sparkly</span>
-        <span class="vibe-tag" data-v="cozy" onclick="setVibe(this)">🧸 Cozy & Sweet</span>
-        <span class="vibe-tag" data-v="gifter" onclick="setVibe(this)">🎁 I Love Gifting</span>
-        <span class="vibe-tag" data-v="collector" onclick="setVibe(this)">🌺 Collector</span>
-        <span class="vibe-tag" data-v="minimal" onclick="setVibe(this)">✨ Minimalist</span>
+        <span class="vtag" data-v="soft" onclick="setVibe(this)">🌸 Soft &amp; Dreamy</span>
+        <span class="vtag" data-v="bold" onclick="setVibe(this)">🦋 Bold &amp; Sparkly</span>
+        <span class="vtag" data-v="cozy" onclick="setVibe(this)">🧸 Cozy &amp; Sweet</span>
+        <span class="vtag" data-v="gifter" onclick="setVibe(this)">🎁 Gifter</span>
+        <span class="vtag" data-v="collector" onclick="setVibe(this)">🌺 Collector</span>
+        <span class="vtag" data-v="minimal" onclick="setVibe(this)">✨ Minimalist</span>
       </div>
     </div>
-    <div class="profile-card">
-      <h3>💜 Wishlist</h3>
-      <p style="font-size:.85rem;color:var(--txtl);margin-bottom:1rem">Items you've saved — tap to view your full wishlist</p>
-      <div id="profileWLPreview" style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.8rem"></div>
-      <button class="btn btn-secondary" onclick="showPage('wishlist')" style="font-size:.82rem;padding:9px 20px">View Full Wishlist 🤍</button>
+    <div class="pcard">
+      <h3>💜 Wishlist Preview</h3>
+      <div id="profWLPrev" style="display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:.75rem"></div>
+      <button class="btn btn-secondary btn-sm" onclick="showPage('wishlist')">View Full Wishlist 🤍</button>
     </div>
-    <button class="save-profile-btn" onclick="saveProfile()">💾 Save Profile</button>
-    <button class="logout-btn" onclick="resetProfile()">↺ Reset / Start Over</button>
+    <button class="save-btn" onclick="saveProfile()">💾 Save Profile</button>
+    <button class="reset-btn" onclick="resetProfile()">↺ Reset &amp; Start Over</button>
   </div>
   <footer><div><strong>PrePro Art</strong> — Handmade with Love 💜</div></footer>
 </div>
 
 <script>
-/* ═══════════════════ DATA ═══════════════════ */
-const PRODS=[
-  {id:'p1',cat:'pipe',emoji:'🌸',name:'Cherry Blossom Bouquet',shortDesc:'A sakura bouquet that stays in bloom forever',price:'₹ 299',newItem:true,
-   slides:[{bg:'linear-gradient(135deg,#fce4ec,#f8bbd0)',emoji:'🌸',label:'Front view'},{bg:'linear-gradient(135deg,#f8bbd0,#e1bee7)',emoji:'🌸✨',label:'Detail close-up'},{bg:'linear-gradient(135deg,#e1bee7,#fce4ec)',emoji:'💐',label:'Full bouquet'},{bg:'linear-gradient(135deg,#fff9c4,#fce4ec)',emoji:'🌸🌿',label:'With leaves'}],
-   colors:[{hex:'#f9a8c0',name:'Sakura Pink'},{hex:'#ffffff',name:'Pure White'},{hex:'#fce4ec',name:'Blush Rose'},{hex:'#e8d5f5',name:'Lavender Mist'}],
-   fullDesc:'Hand-crafted cherry blossom bouquet made with the finest pastel pink pipe cleaners, twisted into realistic sakura petals. Perfect as a room decoration, gift, or forever keepsake.',
-   specs:{Size:'18–22 cm tall',Colors:'Pink, White, Blush',Material:'Pipe Cleaners + Wire',Customisable:'Yes'},wa:'Cherry+Blossom+Bouquet+%F0%9F%8C%B8',tags:['flower','bouquet','pink','sakura']},
+/* ═══════════════════════════════════════════════════
+   ✿ GITHUB VISITOR LOG CONFIGURATION
+   ─────────────────────────────────────────────────
+   To see who visited and their details on GitHub:
+   1. Go to https://github.com/settings/tokens
+      → Generate new token (classic)
+      → Tick the 'gist' scope → Generate
+   2. Go to https://gist.github.com
+      → Create a new SECRET Gist
+      → Name it: prepro-visitors.json
+      → Content: []
+      → Save
+   3. Paste your token and Gist ID below:
+═══════════════════════════════════════════════════ */
+const GITHUB_TOKEN = '';       // ← paste your token here (keep quotes)
+const GIST_ID      = '';       // ← paste your Gist ID here (keep quotes)
 
-  {id:'p2',cat:'pipe',emoji:'🦋',name:'Butterfly Fairy',shortDesc:'Pastel butterfly figures with sparkly wings',price:'₹ 249',newItem:false,
-   slides:[{bg:'linear-gradient(135deg,#e8d5f5,#c39bd3)',emoji:'🦋',label:'Front view'},{bg:'linear-gradient(135deg,#c39bd3,#f9c4d2)',emoji:'🦋✨',label:'Wing detail'},{bg:'linear-gradient(135deg,#a8d8ea,#e8d5f5)',emoji:'🦋🌸',label:'With flowers'},{bg:'linear-gradient(135deg,#fff9c4,#fce4ec)',emoji:'🌟',label:'Sparkle view'}],
-   colors:[{hex:'#c39bd3',name:'Lavender'},{hex:'#f9c4d2',name:'Petal Pink'},{hex:'#a8d8ea',name:'Sky Blue'},{hex:'#fff9c4',name:'Sunshine'}],
-   fullDesc:'Delicate butterfly figures with metallic and pastel pipe cleaners. Each wing is hand-shaped and lightly glittered. Great as pendant, décor, or desk companion.',
-   specs:{Size:'8–10 cm wingspan',Colors:'Any pastel combo',Material:'Metallic Pipe Cleaners',Customisable:'Yes'},wa:'Butterfly+Fairy+%F0%9F%A6%8B',tags:['butterfly','wings','sparkle','pastel']},
+async function logVisitor(data){
+  if(!GITHUB_TOKEN || !GIST_ID) return; // skip if not configured
+  try {
+    // read existing
+    const r = await fetch('https://api.github.com/gists/'+GIST_ID,{
+      headers:{'Authorization':'token '+GITHUB_TOKEN,'Accept':'application/vnd.github.v3+json'}
+    });
+    const g = await r.json();
+    const fname = Object.keys(g.files)[0];
+    let visitors = [];
+    try { visitors = JSON.parse(g.files[fname].content)||[]; } catch(e){}
+    // add new entry
+    visitors.unshift({
+      name: data.name||'',
+      dob:  data.bday||'',
+      city: data.city||'',
+      email:data.email||'',
+      vibe: data.vibe||'',
+      time: new Date().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})
+    });
+    // keep last 200
+    if(visitors.length>200) visitors=visitors.slice(0,200);
+    // write back
+    await fetch('https://api.github.com/gists/'+GIST_ID,{
+      method:'PATCH',
+      headers:{'Authorization':'token '+GITHUB_TOKEN,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body: JSON.stringify({files:{[fname]:{content:JSON.stringify(visitors,null,2)}}})
+    });
+  } catch(e){ /* silent fail */ }
+}
 
-  {id:'p3',cat:'pipe',emoji:'🐰',name:'Bunny Keychain',shortDesc:'The fluffiest little bunny keychain ever',price:'₹ 149',newItem:false,
-   slides:[{bg:'linear-gradient(135deg,#fce4ec,#f8bbd0)',emoji:'🐰',label:'Front'},{bg:'linear-gradient(135deg,#e8d5f5,#c39bd3)',emoji:'🐰🎀',label:'With bow'},{bg:'linear-gradient(135deg,#e0e0e0,#f5f5f5)',emoji:'🐰✨',label:'Side view'},{bg:'linear-gradient(135deg,#f9c4d2,#e8d5f5)',emoji:'🔑🐰',label:'On keys'}],
-   colors:[{hex:'#ffffff',name:'Snowy White'},{hex:'#f9c4d2',name:'Bunny Pink'},{hex:'#e8d5f5',name:'Lavender'},{hex:'#c0c0c0',name:'Silver Grey'}],
-   fullDesc:'A tiny fluffy bunny keychain in soft pipe cleaners with a bow tie and metal keyring. Available in white, pink, lavender, and grey. Perfect for bags, keys, pencil cases.',
-   specs:{Size:'6–7 cm',Colors:'White/Pink/Lavender/Grey',Material:'Soft Pipe Cleaners',Customisable:'Colour & bow'},wa:'Bunny+Keychain+%F0%9F%90%B0',tags:['bunny','keychain','cute','fluffy']},
+/* ═══════════════════════════════════════════════════
+   ✿ PRODUCTS — EDIT YOUR ITEMS HERE
+═══════════════════════════════════════════════════ */
+const PRODS = [
 
-  {id:'p4',cat:'crochet',emoji:'🧸',name:'Mini Bear Amigurumi',shortDesc:'Palm-sized bear in pastel yarn — squishy & huggable',price:'₹ 399',newItem:true,
-   slides:[{bg:'linear-gradient(135deg,#f5deb3,#d4a574)',emoji:'🧸',label:'Front'},{bg:'linear-gradient(135deg,#fce4ec,#f9c4d2)',emoji:'🧸🎀',label:'With bow detail'},{bg:'linear-gradient(135deg,#e8d5f5,#c39bd3)',emoji:'🧸💜',label:'Side view'},{bg:'linear-gradient(135deg,#a8d8ea,#90caf9)',emoji:'🧸✨',label:'Blue variant'}],
-   colors:[{hex:'#d4a574',name:'Warm Beige'},{hex:'#f9c4d2',name:'Blush Pink'},{hex:'#e8d5f5',name:'Lavender'},{hex:'#a8d8ea',name:'Baby Blue'}],
-   fullDesc:'Palm-sized crocheted teddy bear in premium soft cotton yarn with embroidered eyes and a tiny bow. Stuffed with hypoallergenic fiberfill. Fully customisable colour!',
-   specs:{Size:'9–11 cm',Colors:'Beige/Pink/Lavender/Blue',Material:'Cotton Yarn + Fiberfill',Customisable:'Full colour'},wa:'Mini+Bear+Amigurumi+%F0%9F%A7%B8',tags:['bear','amigurumi','crochet','squishy']},
+  /* ── PIPE CLEANER ── */
+  {
+    id: 'p1',
+    cat: 'pipe',
+    /* IMAGES: upload to your GitHub repo in an /images/ folder.
+       Put the file paths here. Use emoji as fallback if no image yet. */
+    images: [],            // e.g. ['images/p1-a.jpg','images/p1-b.jpg','images/p1-c.jpg']
+    emoji:  '🌸',         // shown when no image available
+    name:   'Cherry Blossom Bouquet',
+    shortDesc: 'A sakura bouquet that stays in bloom forever',
+    fullDesc:  'Hand-crafted cherry blossom bouquet made with the finest pastel pink pipe cleaners, twisted into realistic sakura petals. Perfect as room decoration, gift, or forever keepsake.',
+    price:    '₹ 299',
+    oldPrice: '',          // set to e.g. '₹ 350' to show sale price strikethrough
+    newItem:  true,        // true = shows "New" badge
+    sold:     false,       // ← CHANGE TO true TO MARK AS SOLD OUT (one word!)
+    colors: [
+      { hex: '#f9a8c0', name: 'Blush Pink' },
+      { hex: '#ffffff', name: 'White' },
+      { hex: '#e8d5f5', name: 'Lavender' },
+    ],
+    specs: { Size: '18–22 cm', Material: 'Pipe Cleaners + Wire', Customisable: 'Yes', Delivery: '4–6 days' },
+    wa: 'Cherry+Blossom+Bouquet+%F0%9F%8C%B8',
+    tags: ['flower','bouquet','pink','sakura'],
+  },
 
-  {id:'p5',cat:'crochet',emoji:'🌷',name:'Tulip Bookmark',shortDesc:'A pretty floral bookmark for bookworms',price:'₹ 179',newItem:false,
-   slides:[{bg:'linear-gradient(135deg,#ffcdd2,#ef9a9a)',emoji:'🌷',label:'Front'},{bg:'linear-gradient(135deg,#fce4ec,#f8bbd0)',emoji:'🌷📚',label:'In a book'},{bg:'linear-gradient(135deg,#fff9c4,#ffe082)',emoji:'🌷🌿',label:'Yellow variant'},{bg:'linear-gradient(135deg,#e8d5f5,#c39bd3)',emoji:'🌷💜',label:'Purple variant'}],
-   colors:[{hex:'#e53935',name:'Classic Red'},{hex:'#f9c4d2',name:'Soft Pink'},{hex:'#f9a825',name:'Sunny Yellow'},{hex:'#9b59b6',name:'Royal Purple'}],
-   fullDesc:'Dainty crocheted tulip bookmark in soft cotton thread. The stem wraps around your book page and the flower blooms out the top. Multiple colours, great gift for readers.',
-   specs:{Size:'15 cm total',Colors:'Red/Pink/Yellow/Purple',Material:'Cotton Thread',Customisable:'Colour'},wa:'Tulip+Bookmark+%F0%9F%8C%B7',tags:['bookmark','tulip','flower','crochet']},
+  {
+    id: 'p2',
+    cat: 'pipe',
+    images: [],
+    emoji:  '🦋',
+    name:   'Butterfly Fairy',
+    shortDesc: 'Pastel butterfly figures with sparkly wings',
+    fullDesc:  'Delicate butterfly figures with metallic and pastel pipe cleaners. Each wing is hand-shaped and lightly glittered. Choose your colour combo — great as pendant, décor, or desk companion.',
+    price:    '₹ 249',
+    oldPrice: '',
+    newItem:  false,
+    sold:     false,
+    colors: [
+      { hex: '#c39bd3', name: 'Lavender' },
+      { hex: '#f9c4d2', name: 'Pink' },
+      { hex: '#a8d8ea', name: 'Sky Blue' },
+    ],
+    specs: { Size: '8–10 cm wingspan', Material: 'Metallic Pipe Cleaners', Customisable: 'Yes', Delivery: '4–6 days' },
+    wa: 'Butterfly+Fairy+%F0%9F%A6%8B',
+    tags: ['butterfly','wings','sparkle','pastel'],
+  },
 
-  {id:'p6',cat:'crochet',emoji:'🍓',name:'Strawberry Bag Charm',shortDesc:'Sweet lil strawberry for your bag or keys',price:'₹ 199',newItem:false,
-   slides:[{bg:'linear-gradient(135deg,#ffcdd2,#e53935)',emoji:'🍓',label:'Front'},{bg:'linear-gradient(135deg,#e53935,#c62828)',emoji:'🍓✨',label:'Close-up'},{bg:'linear-gradient(135deg,#c8e6c9,#66bb6a)',emoji:'🍓🌿',label:'Leaf detail'},{bg:'linear-gradient(135deg,#fce4ec,#f8bbd0)',emoji:'🍓👜',label:'On bag'}],
-   colors:[{hex:'#e53935',name:'Strawberry Red'},{hex:'#4caf50',name:'Leaf Green'}],
-   fullDesc:'Crocheted strawberry charm with white seed detailing and green leaf top. Comes with a gold keyring. Compact, cute, great for bags, keys, or phone cases.',
-   specs:{Size:'5–6 cm',Colors:'Red + Green',Material:'Cotton Yarn',Customisable:'On request'},wa:'Strawberry+Bag+Charm+%F0%9F%8D%93',tags:['strawberry','charm','keychain','crochet']},
+  {
+    id: 'p3',
+    cat: 'pipe',
+    images: [],
+    emoji:  '🐰',
+    name:   'Bunny Keychain',
+    shortDesc: 'The fluffiest little bunny keychain ever',
+    fullDesc:  'A tiny fluffy bunny keychain in soft pipe cleaners with a bow tie and metal keyring. Available in white, pink, lavender, and grey. Perfect for bags, keys, pencil cases.',
+    price:    '₹ 149',
+    oldPrice: '',
+    newItem:  false,
+    sold:     false,
+    colors: [
+      { hex: '#ffffff', name: 'White' },
+      { hex: '#f9c4d2', name: 'Pink' },
+      { hex: '#e8d5f5', name: 'Lavender' },
+      { hex: '#c0c0c0', name: 'Grey' },
+    ],
+    specs: { Size: '6–7 cm', Material: 'Soft Pipe Cleaners', Customisable: 'Colour & bow', Delivery: '3–5 days' },
+    wa: 'Bunny+Keychain+%F0%9F%90%B0',
+    tags: ['bunny','keychain','cute','fluffy'],
+  },
 
-  {id:'p7',cat:'gifts',emoji:'🎀',name:'Kawaii Birthday Box',shortDesc:'Curated handmade box — perfect birthday surprise',price:'₹ 699',newItem:false,
-   slides:[{bg:'linear-gradient(135deg,#fce4ec,#f8bbd0)',emoji:'🎀',label:'Box closed'},{bg:'linear-gradient(135deg,#f8bbd0,#e1bee7)',emoji:'🎁✨',label:'Inside peek'},{bg:'linear-gradient(135deg,#e1bee7,#ce93d8)',emoji:'🌸🎂',label:'Contents'},{bg:'linear-gradient(135deg,#fff9c4,#fce4ec)',emoji:'💌🎀',label:'With card'}],
-   colors:[{hex:'#f9c4d2',name:'Blush Pink'},{hex:'#c39bd3',name:'Lavender'},{hex:'#ffffff',name:'Classic White'}],
-   fullDesc:'A curated gift box with 3–4 handmade items: pipe cleaner flower, crochet charm, mini card and cute extras. Packed in a pink box with tissue, dried flowers and a personalised handwritten note.',
-   specs:{Contents:'3–4 handmade items',Packaging:'Pink box + tissue + card',Size:'Medium gift box',Customisable:'Fully custom'},wa:'Kawaii+Birthday+Box+%F0%9F%8E%80',tags:['birthday','gift','box','set']},
+  /* ── CROCHET ── */
+  {
+    id: 'p4',
+    cat: 'crochet',
+    images: [],
+    emoji:  '🧸',
+    name:   'Mini Bear Amigurumi',
+    shortDesc: 'Palm-sized bear in pastel yarn — squishy & huggable',
+    fullDesc:  'Palm-sized crocheted teddy bear in premium soft cotton yarn with embroidered eyes and a tiny bow. Stuffed with hypoallergenic fiberfill. Fully customisable colour!',
+    price:    '₹ 399',
+    oldPrice: '',
+    newItem:  true,
+    sold:     false,
+    colors: [
+      { hex: '#d4a574', name: 'Caramel' },
+      { hex: '#f9c4d2', name: 'Pink' },
+      { hex: '#e8d5f5', name: 'Lavender' },
+      { hex: '#a8d8ea', name: 'Blue' },
+    ],
+    specs: { Size: '9–11 cm', Material: 'Cotton Yarn + Fiberfill', Customisable: 'Full colour', Delivery: '5–7 days' },
+    wa: 'Mini+Bear+Amigurumi+%F0%9F%A7%B8',
+    tags: ['bear','amigurumi','crochet','squishy'],
+  },
 
-  {id:'p8',cat:'gifts',emoji:'💝',name:'Bestie Gift Set',shortDesc:'Matching duo set — for you and your person',price:'₹ 549',newItem:true,
-   slides:[{bg:'linear-gradient(135deg,#fce4ec,#f9c4d2)',emoji:'💝',label:'Both pieces'},{bg:'linear-gradient(135deg,#e8d5f5,#c39bd3)',emoji:'💝🎀',label:'Packaging'},{bg:'linear-gradient(135deg,#f9c4d2,#e8d5f5)',emoji:'💌',label:'BFF card'},{bg:'linear-gradient(135deg,#fff9c4,#fce4ec)',emoji:'👯',label:'Matching set'}],
-   colors:[{hex:'#f9c4d2',name:'Dusty Rose'},{hex:'#c39bd3',name:'Soft Lilac'}],
-   fullDesc:'Two matching handmade items — one for you, one for your bestie. Matching bunny keychains, crochet charms or pipe cleaner flowers. Comes with a BFF card.',
-   specs:{Contents:'2 matching pieces',Packaging:'Shared gift box + BFF card',Size:'Small-Medium',Customisable:'Choose your set'},wa:'Bestie+Gift+Set+%F0%9F%92%9D',tags:['bestie','matching','gift','friends']},
+  {
+    id: 'p5',
+    cat: 'crochet',
+    images: [],
+    emoji:  '🌷',
+    name:   'Tulip Bookmark',
+    shortDesc: 'A pretty floral bookmark for bookworms',
+    fullDesc:  'Dainty crocheted tulip bookmark in soft cotton thread. The stem wraps around your book page and the flower blooms out the top. Great gift for readers.',
+    price:    '₹ 179',
+    oldPrice: '',
+    newItem:  false,
+    sold:     false,
+    colors: [
+      { hex: '#e53935', name: 'Red' },
+      { hex: '#f9c4d2', name: 'Pink' },
+      { hex: '#f9a825', name: 'Yellow' },
+      { hex: '#9b59b6', name: 'Purple' },
+    ],
+    specs: { Size: '15 cm total', Material: 'Cotton Thread', Customisable: 'Colour', Delivery: '3–4 days' },
+    wa: 'Tulip+Bookmark+%F0%9F%8C%B7',
+    tags: ['bookmark','tulip','flower','crochet'],
+  },
 
-  {id:'p9',cat:'gifts',emoji:'✨',name:'Custom Order',shortDesc:'Your idea, our hands — pure personalised magic',price:'Custom',newItem:false,
-   slides:[{bg:'linear-gradient(135deg,#fce4ec,#e8d5f5)',emoji:'✨',label:'Anything is possible'},{bg:'linear-gradient(135deg,#e8d5f5,#a8d8ea)',emoji:'🎨',label:'Your colours'},{bg:'linear-gradient(135deg,#fff9c4,#fce4ec)',emoji:'💌',label:'Chat with us'},{bg:'linear-gradient(135deg,#f9c4d2,#c39bd3)',emoji:'🌸',label:'The result'}],
-   colors:[{hex:'#f9c4d2',name:'Your choice!'},{hex:'#c39bd3',name:'We match it'},{hex:'#a8d8ea',name:'Any colour'},{hex:'#f9a825',name:'You decide'}],
-   fullDesc:'Have a specific idea? DM us on Instagram or WhatsApp and we will bring your dream to life. No idea too small or too big 🌸',
-   specs:{Turnaround:'5–7 days',Price:'Starts at ₹200',Available:'Pipe Cleaner & Crochet',Note:'Discuss before ordering'},wa:'Custom+Order+%E2%9C%A8+Can+we+discuss%3F',tags:['custom','personalised','special','order']},
-];
+  {
+    id: 'p6',
+    cat: 'crochet',
+    images: [],
+    emoji:  '🍓',
+    name:   'Strawberry Bag Charm',
+    shortDesc: 'Sweet lil strawberry for your bag or keys',
+    fullDesc:  'Crocheted strawberry charm with white seed detailing and green leaf top. Comes with a gold keyring. Compact, cute, great for bags, keys, or phone cases.',
+    price:    '₹ 199',
+    oldPrice: '',
+    newItem:  false,
+    sold:     false,
+    colors: [
+      { hex: '#e53935', name: 'Red' },
+      { hex: '#4caf50', name: 'Green leaf' },
+    ],
+    specs: { Size: '5–6 cm', Material: 'Cotton Yarn + Keyring', Customisable: 'On request', Delivery: '3–4 days' },
+    wa: 'Strawberry+Bag+Charm+%F0%9F%8D%93',
+    tags: ['strawberry','charm','keychain','crochet'],
+  },
 
-/* ═══════════════════ STATE ═══════════════════ */
-let USER = JSON.parse(localStorage.getItem('pp-user')||'{"name":"","avatar":"🌸","vibe":"","email":"","city":"","bday":"","visits":0,"views":0}');
-let wishlist = JSON.parse(localStorage.getItem('pp-wl')||'[]');
+  /* ── GIFTS ── */
+  {
+    id: 'p7',
+    cat: 'gifts',
+    images: [],
+    emoji:  '🎀',
+    name:   'Kawaii Birthday Box',
+    shortDesc: 'Curated handmade box — perfect birthday surprise',
+    fullDesc:  'A curated gift box with 3–4 handmade items: pipe cleaner flower, crochet charm, mini card, cute extras. Packed in a pink box with tissue, dried flowers & personalised handwritten note.',
+    price:    '₹ 699',
+    oldPrice: '',
+    newItem:  false,
+    sold:     false,
+    colors: [
+      { hex: '#f9c4d2', name: 'Pink Box' },
+      { hex: '#c39bd3', name: 'Lavender Box' },
+    ],
+    specs: { Contents: '3–4 items', Packaging: 'Box + tissue + card', Size: 'Medium', Customisable: 'Fully custom' },
+    wa: 'Kawaii+Birthday+Box+%F0%9F%8E%80',
+    tags: ['birthday','gift','box','set'],
+  },
+
+  {
+    id: 'p8',
+    cat: 'gifts',
+    images: [],
+    emoji:  '💝',
+    name:   'Bestie Gift Set',
+    shortDesc: 'Matching duo set — for you and your person',
+    fullDesc:  'Two matching handmade items — one for you, one for your bestie. Matching bunny keychains, crochet charms, or pipe cleaner flowers. Comes with a BFF card.',
+    price:    '₹ 549',
+    oldPrice: '',
+    newItem:  true,
+    sold:     false,
+    colors: [
+      { hex: '#f9c4d2', name: 'Pink Set' },
+      { hex: '#c39bd3', name: 'Lavender Set' },
+    ],
+    specs: { Contents: '2 matching pieces', Packaging: 'Gift box + BFF card', Customisable: 'Choose your set', Delivery: '5–7 days' },
+    wa: 'Bestie+Gift+Set+%F0%9F%92%9D',
+    tags: ['bestie','matching','gift','friends'],
+  },
+
+  {
+    id: 'p9',
+    cat: 'gifts',
+    images: [],
+    emoji:  '✨',
+    name:   'Custom Order',
+    shortDesc: 'Your idea, our hands — pure personalised magic',
+    fullDesc:  'Have a specific idea? A character you love, colours for a room, a very personal gift? DM us on WhatsApp or Instagram and we will bring your dream to life 🌸',
+    price:    'Custom',
+    oldPrice: '',
+    newItem:  false,
+    sold:     false,
+    colors: [
+      { hex: '#f9c4d2', name: 'Any colour' },
+      { hex: '#c39bd3', name: 'You choose' },
+    ],
+    specs: { Turnaround: '5–7 days', 'Starting at': '₹ 200', Available: 'Pipe Cleaner & Crochet', Note: 'Discuss first' },
+    wa: 'Custom+Order+%E2%9C%A8+Can+we+discuss%3F',
+    tags: ['custom','personalised','special','order'],
+  },
+
+]; // ← end of PRODS — add more products above this line following the same format
+
+/* ═══════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════ */
+let U = JSON.parse(localStorage.getItem('pp-u')||'{"name":"","avatar":"🌸","vibe":"","email":"","city":"","bday":"","visits":0,"views":0}');
+let WL = JSON.parse(localStorage.getItem('pp-wl')||'[]');
 let curFilter='all', curSearch='';
-let selectedAvatar = USER.avatar||'🌸';
-let selectedVibe = USER.vibe||'';
+let selAv = U.avatar||'🌸';
+let selVibe = U.vibe||'';
 
-/* ═══════════════════ ONBOARDING ═══════════════════ */
-function checkOnboarding(){
-  if(USER.name){
-    document.getElementById('onboarding').classList.add('hidden');
-    applyUserToSite();
-  } else {
-    initObPetals();
-  }
+/* ═══════════════════════════════════════════════
+   ONBOARDING
+═══════════════════════════════════════════════ */
+let obAv='🌸', obVibe='';
+function obNameCheck(){
+  const v=document.getElementById('obName').value.trim();
+  document.getElementById('obNameBtn').disabled=!v;
 }
-function initObPetals(){
-  const c=document.getElementById('obPetals');
-  const emojis=['🌸','🌺','🌼','✨','💜','🦋'];
-  for(let i=0;i<16;i++){
-    const p=document.createElement('div');
-    p.style.cssText='position:absolute;font-size:'+(14+Math.random()*20)+'px;left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;opacity:'+(0.1+Math.random()*.25)+';animation:obFloat '+(4+Math.random()*4)+'s ease-in-out '+Math.random()*4+'s infinite alternate;pointer-events:none;';
-    p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
-    c.appendChild(p);
-  }
-  const style=document.createElement('style');
-  style.textContent='@keyframes obFloat{from{transform:translateY(0) rotate(-5deg)}to{transform:translateY(-18px) rotate(5deg)}}';
-  document.head.appendChild(style);
+function obShow(n){
+  document.querySelectorAll('.ob-step').forEach(s=>s.classList.remove('on'));
+  document.getElementById('obs'+n).classList.add('on');
 }
-function checkNameBtn(){
-  const v=document.getElementById('obNameInput').value.trim();
-  const btn=document.getElementById('obNameBtn');
-  btn.style.opacity=v?'1':'0.5';
-  btn.style.pointerEvents=v?'auto':'none';
-}
-function obNext0(){
-  const n=document.getElementById('obNameInput').value.trim();
+function obGo0(){
+  const n=document.getElementById('obName').value.trim();
   if(!n)return;
-  USER.name=n;
-  document.getElementById('obStep0').classList.remove('active');
-  document.getElementById('obStep1').classList.add('active');
+  U.name=n;
+  obShow(1);
 }
-let obSelectedAvatar='🌸';
-function pickAvatar(el){
-  document.querySelectorAll('.ob-avatar').forEach(a=>a.classList.remove('selected'));
-  el.classList.add('selected');
-  obSelectedAvatar=el.dataset.av;
+function obGo1(){
+  const b=document.getElementById('obBday').value;
+  if(b) U.bday=b;
+  obShow(2);
 }
-function obNext1(){
-  USER.avatar=obSelectedAvatar||'🌸';
-  selectedAvatar=USER.avatar;
-  document.getElementById('obStep1').classList.remove('active');
-  document.getElementById('obStep2').classList.add('active');
+function obPickAv(el){
+  document.querySelectorAll('.ob-av').forEach(a=>a.classList.remove('on'));
+  el.classList.add('on'); obAv=el.dataset.av;
 }
-let obSelectedVibe='';
-function pickVibe(el){
-  document.querySelectorAll('.ob-qopt').forEach(b=>b.classList.remove('selected'));
-  el.classList.add('selected');
-  obSelectedVibe=el.dataset.v;
-  const btn=document.getElementById('vibeNextBtn');
-  btn.style.opacity='1'; btn.style.pointerEvents='auto';
+function obGo2(){
+  U.avatar=obAv; selAv=obAv;
+  obShow(3);
+}
+function obPickVibe(el){
+  document.querySelectorAll('.ob-vibe').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on'); obVibe=el.dataset.v;
+  document.getElementById('obVibeBtn').disabled=false;
 }
 function obFinish(){
-  USER.vibe=obSelectedVibe;
-  selectedVibe=USER.vibe;
-  USER.visits=(USER.visits||0)+1;
-  saveUser();
-  document.getElementById('obWelcomeName').textContent=USER.name;
-  document.getElementById('obWelcomeAvatar').textContent=USER.avatar;
-  document.getElementById('obStep2').classList.remove('active');
-  document.getElementById('obStep3').classList.add('active');
+  U.vibe=obVibe; selVibe=obVibe;
+  U.visits=1;
+  saveU();
+  logVisitor(U); // log to GitHub
+  document.getElementById('obWelcomeNm').textContent=U.name;
+  document.getElementById('obWelcomeAv').textContent=U.avatar;
+  obShow(4);
   doConfetti();
 }
 function obSkip(){
-  USER.name='Friend'; USER.avatar='🌸'; USER.vibe=''; USER.visits=1;
-  saveUser();
+  U.name=U.name||'Friend'; U.avatar='🌸'; U.visits=1;
+  saveU();
   enterSite();
 }
 function enterSite(){
-  document.getElementById('onboarding').classList.add('hidden');
-  applyUserToSite();
+  document.getElementById('ob').classList.add('gone');
+  applyUser();
 }
-
-/* ═══════════════════ USER HELPERS ═══════════════════ */
-function saveUser(){localStorage.setItem('pp-user',JSON.stringify(USER));}
-function applyUserToSite(){
-  // nav avatar
-  document.getElementById('navAvatar').textContent=USER.avatar||'🌸';
-  // hero greeting
-  const h=new Date().getHours();
-  const tod=h<12?'morning':h<17?'afternoon':h<21?'evening':'night';
-  const todEmoji=h<12?'☀️':h<17?'🌺':h<21?'🌙':'🦉';
-  const el=document.getElementById('heroGreet');
-  if(USER.name&&USER.name!=='Friend'){
-    el.textContent='Hey '+USER.name+'! Good '+tod+' '+todEmoji;
+function initOb(){
+  const c=document.getElementById('obDeco');
+  const ems=['🌸','🌺','🌼','✨','💜','🦋'];
+  for(let i=0;i<14;i++){
+    const d=document.createElement('div');
+    const sz=14+Math.random()*20;
+    d.style.cssText='position:absolute;font-size:'+sz+'px;left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;opacity:'+(0.08+Math.random()*.2)+';animation:obfl '+(4+Math.random()*4)+'s ease-in-out '+Math.random()*4+'s infinite alternate;pointer-events:none';
+    d.textContent=ems[Math.floor(Math.random()*ems.length)];
+    c.appendChild(d);
   }
-  // greeting banner
-  const vibeRecs={soft:'🌸 Curated for you: check out our Pipe Cleaner flowers!',bold:'🦋 Bold picks await — see the Butterfly Fairy collection!',cozy:'🧸 Cozy picks inside — the Mini Bear is waiting for you!',gifter:'🎁 Gift ideas handpicked for you — see our Gift Sets!',collector:'🌺 Collector alert: new items just added!',minimal:'✨ Clean, minimal pieces curated just for you!'};
-  const gb=document.getElementById('greetBanner');
-  if(USER.vibe&&vibeRecs[USER.vibe]) gb.textContent=vibeRecs[USER.vibe];
-  else { const h2=new Date().getHours(); gb.textContent=h2<12?'Good morning! ☀️ Start your day with something handmade 🌸':h2<17?'Good afternoon! 🌺 Perfect time to browse something cute!':h2<21?'Good evening! 🌙 Wind down with a little kawaii shopping ✨':'Hey night owl! 🦉 We love the night shoppers 💜'; }
-  // profile page
-  syncProfilePage();
-  // update stats
-  USER.visits=Math.max(USER.visits||1,1);
-  saveUser();
+  const st=document.createElement('style');
+  st.textContent='@keyframes obfl{from{transform:translateY(0) rotate(-6deg)}to{transform:translateY(-18px) rotate(6deg)}}';
+  document.head.appendChild(st);
 }
 
-/* ═══════════════════ PROFILE ═══════════════════ */
-function syncProfilePage(){
-  document.getElementById('profileAvatarBig').textContent=USER.avatar||'🌸';
-  document.getElementById('profileNameDisplay').textContent=USER.name||'Your Name';
-  const vibeLabels={soft:'🌸 Soft & Dreamy',bold:'🦋 Bold & Sparkly',cozy:'🧸 Cozy & Sweet',gifter:'🎁 Gifter',collector:'🌺 Collector',minimal:'✨ Minimalist'};
-  document.getElementById('profileVibeTag').textContent='Vibe: '+(vibeLabels[USER.vibe]||'Not set');
-  document.getElementById('pfName').value=USER.name||'';
-  document.getElementById('pfEmail').value=USER.email||'';
-  document.getElementById('pfBday').value=USER.bday||'';
-  document.getElementById('pfCity').value=USER.city||'';
-  document.getElementById('statWL').textContent=wishlist.length;
-  document.getElementById('statViews').textContent=USER.views||0;
-  document.getElementById('statVisits').textContent=USER.visits||1;
-  // avatar picker highlight
-  document.querySelectorAll('.av-opt').forEach(el=>{el.classList.toggle('selected',el.dataset.av===USER.avatar)});
-  // vibe picker highlight
-  document.querySelectorAll('#vibePicker .vibe-tag').forEach(el=>{el.classList.toggle('selected',el.dataset.v===USER.vibe)});
-  // wl preview
-  const wlItems=PRODS.filter(p=>wishlist.includes(p.id)).slice(0,5);
-  document.getElementById('profileWLPreview').innerHTML=wlItems.length?wlItems.map(p=>'<span title="'+p.name+'" style="font-size:1.8rem;cursor:pointer" onclick="openProduct(\''+p.id+'\')" >'+p.emoji+'</span>').join(''):'<span style="font-size:.82rem;color:var(--txtl)">Nothing yet — start wishlisting! 🤍</span>';
+/* ═══════════════════════════════════════════════
+   USER
+═══════════════════════════════════════════════ */
+function saveU(){ localStorage.setItem('pp-u',JSON.stringify(U)); }
+function applyUser(){
+  document.getElementById('navAv').textContent = U.avatar||'🌸';
+  const h=new Date().getHours();
+  const tod=h<12?'morning ☀️':h<17?'afternoon 🌺':h<21?'evening 🌙':'night 🦉';
+  const hg=document.getElementById('heroGreet');
+  if(U.name&&U.name!=='Friend') hg.textContent='Hey '+U.name+'! Good '+tod;
+  // greeting bar
+  const vibeMsg={soft:'🌸 Curated for you: check out our Pipe Cleaner flowers!',bold:'🦋 Bold picks await — see the Butterfly Fairy!',cozy:'🧸 Cozy picks: the Mini Bear is waiting for you!',gifter:'🎁 Gift ideas handpicked — see our Gift Sets!',collector:'🌺 Collector? New items just added!',minimal:'✨ Clean, minimal pieces curated just for you!'};
+  const gb=document.getElementById('greetBar');
+  if(U.vibe&&vibeMsg[U.vibe]) gb.textContent=vibeMsg[U.vibe];
+  else{ const h2=new Date().getHours(); gb.textContent=h2<12?'Good morning! ☀️ Start your day with something handmade 🌸':h2<17?'Good afternoon! 🌺 Perfect time to browse something cute!':h2<21?'Good evening! 🌙 Wind down with a little kawaii shopping ✨':'Hey night owl! 🦉 Happy late-night browsing 💜'; }
+  syncProf();
 }
-function setAvatar(el){
-  document.querySelectorAll('.av-opt').forEach(a=>a.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedAvatar=el.dataset.av;
-  document.getElementById('profileAvatarBig').textContent=selectedAvatar;
-  document.getElementById('navAvatar').textContent=selectedAvatar;
+
+/* ═══════════════════════════════════════════════
+   PROFILE
+═══════════════════════════════════════════════ */
+const VIBELABELS={soft:'🌸 Soft & Dreamy',bold:'🦋 Bold & Sparkly',cozy:'🧸 Cozy & Sweet',gifter:'🎁 Gifter',collector:'🌺 Collector',minimal:'✨ Minimalist'};
+function syncProf(){
+  document.getElementById('profAvBig').textContent=U.avatar||'🌸';
+  document.getElementById('profNameD').textContent=U.name||'Your Name';
+  document.getElementById('profVibeD').textContent='Vibe: '+(VIBELABELS[U.vibe]||'Not set');
+  document.getElementById('pfName').value=U.name||'';
+  document.getElementById('pfEmail').value=U.email||'';
+  document.getElementById('pfBday').value=U.bday||'';
+  document.getElementById('pfCity').value=U.city||'';
+  document.getElementById('stWL').textContent=WL.length;
+  document.getElementById('stViews').textContent=U.views||0;
+  document.getElementById('stVisits').textContent=U.visits||1;
+  document.querySelectorAll('.av-opt').forEach(el=>el.classList.toggle('on',el.dataset.av===U.avatar));
+  document.querySelectorAll('.vtag').forEach(el=>el.classList.toggle('on',el.dataset.v===U.vibe));
+  const wlp=PRODS.filter(p=>WL.includes(p.id)).slice(0,6);
+  document.getElementById('profWLPrev').innerHTML=wlp.length
+    ?wlp.map(p=>'<span title="'+p.name+'" style="font-size:1.7rem;cursor:pointer" onclick="openProd(\''+p.id+'\')">'+p.emoji+'</span>').join('')
+    :'<span style="font-size:.8rem;color:var(--txtl)">Nothing saved yet 🤍</span>';
+}
+function setAv(el){
+  document.querySelectorAll('.av-opt').forEach(a=>a.classList.remove('on'));
+  el.classList.add('on'); selAv=el.dataset.av;
+  document.getElementById('profAvBig').textContent=selAv;
+  document.getElementById('navAv').textContent=selAv;
 }
 function setVibe(el){
-  document.querySelectorAll('#vibePicker .vibe-tag').forEach(a=>a.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedVibe=el.dataset.v;
+  document.querySelectorAll('.vtag').forEach(a=>a.classList.remove('on'));
+  el.classList.add('on'); selVibe=el.dataset.v;
 }
 function saveProfile(){
-  USER.name=document.getElementById('pfName').value.trim()||USER.name;
-  USER.email=document.getElementById('pfEmail').value.trim();
-  USER.bday=document.getElementById('pfBday').value;
-  USER.city=document.getElementById('pfCity').value.trim();
-  USER.avatar=selectedAvatar;
-  USER.vibe=selectedVibe;
-  saveUser();
-  applyUserToSite();
-  showToast('Profile saved! 💜');
-  doConfetti();
+  U.name=document.getElementById('pfName').value.trim()||U.name;
+  U.email=document.getElementById('pfEmail').value.trim();
+  U.bday=document.getElementById('pfBday').value;
+  U.city=document.getElementById('pfCity').value.trim();
+  U.avatar=selAv; U.vibe=selVibe;
+  saveU(); applyUser();
+  logVisitor(U);
+  showToast('Profile saved! 💜'); doConfetti();
 }
 function resetProfile(){
   if(!confirm('Reset your profile and start over?'))return;
-  localStorage.removeItem('pp-user');
-  localStorage.removeItem('pp-wl');
-  location.reload();
+  localStorage.clear(); location.reload();
 }
 
-/* ═══════════════════ WISHLIST ═══════════════════ */
-function saveWL(){localStorage.setItem('pp-wl',JSON.stringify(wishlist));}
-function isLiked(id){return wishlist.includes(id);}
+/* ═══════════════════════════════════════════════
+   WISHLIST
+═══════════════════════════════════════════════ */
+function saveWL(){ localStorage.setItem('pp-wl',JSON.stringify(WL)); }
+function isLiked(id){ return WL.includes(id); }
 function toggleLike(id,e){
   if(e){e.stopPropagation();e.preventDefault();}
-  if(isLiked(id)){wishlist=wishlist.filter(x=>x!==id);showToast('Removed from wishlist 🤍');}
-  else{wishlist.push(id);showToast('Added to wishlist 💜');doConfetti();}
-  saveWL();updateBadge();
-  document.querySelectorAll('[data-like="'+id+'"]').forEach(el=>{el.classList.toggle('liked',isLiked(id));el.textContent=isLiked(id)?'💜':'🤍';});
-  document.querySelectorAll('[data-dllike="'+id+'"]').forEach(el=>{el.classList.toggle('liked',isLiked(id));el.textContent=isLiked(id)?'💜 Wishlisted':'🤍 Add to Wishlist';});
-  if(document.getElementById('page-wishlist').classList.contains('active'))renderWishlist();
-  syncProfilePage();
+  if(isLiked(id)){WL=WL.filter(x=>x!==id);showToast('Removed from wishlist 🤍');}
+  else{WL.push(id);showToast('Added to wishlist 💜');doConfetti();}
+  saveWL(); updateBadge();
+  document.querySelectorAll('[data-lk="'+id+'"]').forEach(el=>{el.classList.toggle('on',isLiked(id));el.textContent=isLiked(id)?'💜':'🤍';});
+  document.querySelectorAll('[data-dlk="'+id+'"]').forEach(el=>{el.classList.toggle('on',isLiked(id));el.textContent=isLiked(id)?'💜 Wishlisted':'🤍 Add to Wishlist';});
+  if(document.getElementById('page-wishlist').classList.contains('on'))renderWL();
+  syncProf();
 }
-function updateBadge(){const b=document.getElementById('wlBadge');b.textContent=wishlist.length;b.classList.toggle('show',wishlist.length>0);}
+function updateBadge(){const b=document.getElementById('wlBadge');b.textContent=WL.length;b.classList.toggle('on',WL.length>0);}
 
-/* ═══════════════════ TOAST ═══════════════════ */
-let toastT;
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2400);}
+/* ═══════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+let tT;
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('on'),2400);}
 
-/* ═══════════════════ PAGES ═══════════════════ */
-function showPage(name){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
+/* ═══════════════════════════════════════════════
+   PAGES
+═══════════════════════════════════════════════ */
+function showPage(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.getElementById('page-'+n).classList.add('on');
   window.scrollTo({top:0,behavior:'smooth'});
-  if(name==='wishlist')renderWishlist();
-  if(name==='profile')syncProfilePage();
+  if(n==='wishlist')renderWL();
+  if(n==='profile')syncProf();
 }
-function gotoSection(id){showPage('home');setTimeout(()=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},80);}
-function filterAndGo(cat){setFilter(cat);gotoSection('products');}
+function goSec(id){showPage('home');setTimeout(()=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},80);}
+function filterGo(c){setFilter(c);goSec('products');}
 
-/* ═══════════════════ PRODUCTS ═══════════════════ */
-function catLabel(cat){return cat==='pipe'?'Pipe Cleaner':cat==='crochet'?'Crochet':'Gifts';}
-const waIcon='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>';
-const igIcon='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>';
+/* ═══════════════════════════════════════════════
+   PRODUCT CARDS + SWIPING
+═══════════════════════════════════════════════ */
+function catLabel(c){return c==='pipe'?'Pipe Cleaner':c==='crochet'?'Crochet':'Gifts';}
 
 function cardHTML(p){
-  return '<div class="product-card" onclick="openProduct(\''+p.id+'\')"><div class="product-img-wrap"><span style="font-size:4.4rem;z-index:1;position:relative">'+p.emoji+'</span>'+(p.newItem?'<span class="new-badge">New ✨</span>':'')+'<button class="like-btn '+(isLiked(p.id)?'liked':'')+'" data-like="'+p.id+'" onclick="toggleLike(\''+p.id+'\',event)">'+(isLiked(p.id)?'💜':'🤍')+'</button></div><div class="product-body"><div class="product-cat">'+catLabel(p.cat)+'</div><div class="product-name">'+p.name+'</div><div class="product-desc-short">'+p.shortDesc+'</div><div class="product-footer"><div class="product-price">'+p.price+'</div><button class="view-btn">View ✿</button></div></div></div>';
+  const slides = p.images&&p.images.length
+    ? p.images.map(src=>'<div class="card-slide"><img src="'+src+'" alt="'+p.name+'" loading="lazy"/></div>').join('')
+    : '<div class="card-slide">'+p.emoji+'</div>';
+  const dotsHTML = (p.images&&p.images.length>1)
+    ? '<div class="card-dots">'+p.images.map((_,i)=>'<div class="card-dot'+(i===0?' on':'')+'"></div>').join('')+'</div>'
+    : '';
+  const soldO = p.sold ? '<div class="sold-overlay"><span>Sold Out</span></div>' : '';
+  const badge = p.newItem ? '<span class="new-badge">New ✨</span>' : (p.oldPrice?'<span class="sale-badge">Sale</span>':'');
+  return '<div class="prod-card" id="pc-'+p.id+'" onclick="openProd(\''+p.id+'\')">'
+    +'<div class="card-img" id="ci-'+p.id+'">'
+    +'<div class="card-slides" id="cs-'+p.id+'">'+slides+'</div>'
+    +dotsHTML+soldO+badge
+    +'<button class="like-btn '+(isLiked(p.id)?'on':'')+'" data-lk="'+p.id+'" onclick="toggleLike(\''+p.id+'\',event)">'+(isLiked(p.id)?'💜':'🤍')+'</button>'
+    +'</div>'
+    +'<div class="prod-body">'
+    +'<div class="prod-cat">'+catLabel(p.cat)+'</div>'
+    +'<div class="prod-name">'+p.name+'</div>'
+    +'<div class="prod-desc">'+p.shortDesc+'</div>'
+    +'<div class="prod-footer">'
+    +'<div class="prod-price"><strong>'+p.price+'</strong>'+(p.oldPrice?'<del>'+p.oldPrice+'</del>':'')+'</div>'
+    +'<button class="view-btn">View ✿</button>'
+    +'</div></div></div>';
 }
-function renderProducts(){
-  const grid=document.getElementById('productGrid');
+
+function renderProds(){
+  const g=document.getElementById('prodGrid');
   let items=PRODS;
-  if(curFilter!=='all')items=items.filter(p=>p.cat===curFilter);
-  if(curSearch)items=items.filter(p=>p.name.toLowerCase().includes(curSearch)||p.shortDesc.toLowerCase().includes(curSearch)||(p.tags||[]).some(t=>t.includes(curSearch)));
-  if(!items.length){grid.innerHTML='<div class="no-results">No products found 🌸 Try a different search!</div>';return;}
-  grid.innerHTML=items.map(cardHTML).join('');
+  if(curFilter!=='all') items=items.filter(p=>p.cat===curFilter);
+  if(curSearch) items=items.filter(p=>p.name.toLowerCase().includes(curSearch)||p.shortDesc.toLowerCase().includes(curSearch)||(p.tags||[]).some(t=>t.includes(curSearch)));
+  if(!items.length){g.innerHTML='<div class="no-res">No products found 🌸 Try a different search!</div>';return;}
+  g.innerHTML=items.map(cardHTML).join('');
+  // init touch swipe on each card image
+  items.forEach(p=>{ if(p.images&&p.images.length>1) initCardSwipe(p.id, p.images.length); });
 }
+
+function initCardSwipe(id, total){
+  const wrap=document.getElementById('ci-'+id);
+  const slides=document.getElementById('cs-'+id);
+  if(!wrap||!slides) return;
+  let cur=0, startX=0, isDrag=false, moved=0;
+  const goTo=(n)=>{
+    cur=Math.max(0,Math.min(total-1,n));
+    slides.style.transform='translateX(-'+cur*100+'%)';
+    const dots=wrap.querySelectorAll('.card-dot');
+    dots.forEach((d,i)=>d.classList.toggle('on',i===cur));
+  };
+  wrap.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;isDrag=true;moved=0;},{passive:true});
+  wrap.addEventListener('touchmove',e=>{if(!isDrag)return;moved=e.touches[0].clientX-startX;},{passive:true});
+  wrap.addEventListener('touchend',()=>{if(Math.abs(moved)>35){if(moved<0)goTo(cur+1);else goTo(cur-1);}isDrag=false;});
+  // mouse drag support
+  wrap.addEventListener('mousedown',e=>{startX=e.clientX;isDrag=true;moved=0;e.preventDefault();});
+  wrap.addEventListener('mousemove',e=>{if(!isDrag)return;moved=e.clientX-startX;});
+  wrap.addEventListener('mouseup',()=>{if(Math.abs(moved)>35){if(moved<0)goTo(cur+1);else goTo(cur-1);}isDrag=false;});
+  wrap.addEventListener('mouseleave',()=>{isDrag=false;});
+}
+
 function setFilter(cat,btn){
   curFilter=cat;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  renderProducts();
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  renderProds();
 }
-function handleSearch(val){curSearch=val.toLowerCase().trim();renderProducts();if(curSearch)gotoSection('products');}
+function doSearch(val){
+  curSearch=val.toLowerCase().trim();
+  renderProds();
+  if(curSearch) goSec('products');
+}
 
-/* ── Gallery state ── */
-let _gIdx=0, _gProd=null, _gDragging=false, _gStartX=0, _gDeltaX=0;
+/* ═══════════════════════════════════════════════
+   PRODUCT DETAIL — FULL WORKING SWIPER + COLORS
+═══════════════════════════════════════════════ */
+let detailCur=0, detailImages=[], detailEmoji='';
 
-function openProduct(id){
+function openProd(id){
   const p=PRODS.find(x=>x.id===id); if(!p) return;
-  USER.views=(USER.views||0)+1; saveUser();
-  _gIdx=0; _gProd=p;
+  U.views=(U.views||0)+1; saveU();
+  detailImages=p.images&&p.images.length?p.images:[];
+  detailEmoji=p.emoji;
+  detailCur=0;
 
-  const slides=p.slides||[{bg:'linear-gradient(135deg,var(--pl),var(--pus))',emoji:p.emoji,label:'View'}];
-  const specs=Object.entries(p.specs).map(([k,v])=>'<div class="spec-item"><div class="spec-label">'+k+'</div><div class="spec-value">'+v+'</div></div>').join('');
-  const colorDots=p.colors.map((c,i)=>
-    '<div class="color-dot'+(i===0?' active':'')+'" style="background:'+c.hex+'" title="'+c.name+'" data-ci="'+i+'" onclick="selectColor('+i+')"></div>'
-  ).join('');
-  const slidesHTML=slides.map(s=>
-    '<div class="gallery-slide" style="background:'+s.bg+'"><span>'+s.emoji+'</span><span class="swipe-hint" id="swipeHint">← swipe →</span></div>'
-  ).join('');
-  const dotsHTML=slides.map((_,i)=>'<div class="gallery-dot'+(i===0?' active':'')+'" onclick="goSlide('+i+')"></div>').join('');
+  const total=detailImages.length||1;
+  const slides=detailImages.length
+    ? detailImages.map((src,i)=>'<div class="detail-slide"><img src="'+src+'" alt="'+p.name+'" loading="lazy"/></div>').join('')
+    : '<div class="detail-slide">'+p.emoji+'</div>';
+  const dots=total>1?detailImages.map((_,i)=>'<div class="detail-dot'+(i===0?' on':'')+'"></div>').join(''):'';
+  const thumbs=total>1?detailImages.map((src,i)=>'<div class="thumb'+(i===0?' on':'')+'" onclick="detailGoTo('+i+')"><img src="'+src+'" alt="view '+i+'"/></div>').join(''):'';
+  const arrs=total>1
+    ?'<button class="swipe-prev" onclick="detailGoTo(detailCur-1)">‹</button><button class="swipe-next" onclick="detailGoTo(detailCur+1)">›</button>'
+    :'';
+
+  const colorDots=p.colors.map((c,i)=>'<div class="cswatch'+(i===0?' on':'')+'" style="background:'+c.hex+'" data-name="'+c.name+'" title="'+c.name+'" onclick="pickColor(this,\''+id+'\')"></div>').join('');
+  const specs=Object.entries(p.specs).map(([k,v])=>'<div class="spec-item"><div class="spec-lbl">'+k+'</div><div class="spec-val">'+v+'</div></div>').join('');
+  const stockBadge=p.sold
+    ?'<div class="detail-stock out-stock">❌ Out of Stock</div>'
+    :'<div class="detail-stock in-stock">✅ In Stock</div>';
 
   document.getElementById('detailContent').innerHTML=
     '<button class="back-btn" onclick="showPage(\'home\')">← Back to Shop</button>'
     +'<div class="detail-grid">'
+    // left: swiper
     +'<div>'
-      +'<div class="gallery-outer" id="galleryOuter">'
-        +'<div class="gallery-track" id="galleryTrack">'+slidesHTML+'</div>'
-        +(slides.length>1?'<button class="gallery-prev" onclick="galStep(-1)">‹</button><button class="gallery-next" onclick="galStep(1)">›</button>':'')
-      +'</div>'
-      +(slides.length>1?'<div class="gallery-dots" id="galDots">'+dotsHTML+'</div>':'')
-      +'<div style="text-align:center;margin-top:.5rem;font-size:.73rem;color:var(--txtl);font-weight:700" id="slideLabel">'+slides[0].label+'</div>'
+    +'<div class="detail-swiper" id="dSwiper">'
+    +'<div class="detail-slides" id="dSlides">'+slides+'</div>'
+    +arrs
     +'</div>'
+    +(total>1?'<div class="detail-dots" id="dDots">'+dots+'</div>':'')
+    +(thumbs?'<div class="thumb-strip" id="dThumbs">'+thumbs+'</div>':'')
+    +'</div>'
+    // right: info
     +'<div class="detail-info">'
-      +'<div class="detail-cat-tag">'+(p.cat==='pipe'?'🌀 Pipe Cleaner':p.cat==='crochet'?'🧶 Crochet':'🎁 Gifts')+'</div>'
-      +'<div class="detail-name">'+p.name+'</div>'
-      +'<div class="stars-row"><span class="stars">★★★★★</span><span class="rating-count">(24 reviews)</span></div>'
-      +'<div class="detail-price">'+p.price+' <small>/ piece</small></div>'
-      +'<button class="detail-like-btn '+(isLiked(p.id)?'liked':'')+'" data-dllike="'+p.id+'" onclick="toggleLike(\''+p.id+'\',event)">'+(isLiked(p.id)?'💜 Wishlisted':'🤍 Add to Wishlist')+'</button>'
-      +'<div class="color-section">'
-        +'<label>Choose Colour</label>'
-        +'<div class="color-name-badge" id="colorNameBadge">'+p.colors[0].name+'</div>'
-        +'<div class="color-dots">'+colorDots+'</div>'
-      +'</div>'
-      +'<div class="order-label">Order via</div>'
-      +'<div class="order-opts">'
-        +'<a class="btn btn-wa" href="https://wa.me/2182783582?text=Hi+PrePro+Art!+I+want+to+order+the+'+p.wa+'" target="_blank" style="font-size:.82rem;padding:10px 18px">'+waIcon+' WhatsApp</a>'
-        +'<a class="btn btn-ig" href="https://instagram.com/sarcasticayuu" target="_blank" style="font-size:.82rem;padding:10px 18px">'+igIcon+' Instagram DM</a>'
-      +'</div>'
-      +'<div class="detail-desc-section"><h4>About this piece ✿</h4><p>'+p.fullDesc+'</p><div class="specs-grid" style="margin-top:.85rem">'+specs+'</div></div>'
+    +'<div class="detail-cat-tag">'+(p.cat==='pipe'?'🌀 Pipe Cleaner':p.cat==='crochet'?'🧶 Crochet':'🎁 Gifts')+'</div>'
+    +'<div class="detail-name">'+p.name+'</div>'
+    +'<div class="stars-row"><span class="stars">★★★★★</span><span class="rat-ct">(24 reviews)</span></div>'
+    +'<div class="detail-price-row"><div class="detail-price">'+p.price+'</div>'+(p.oldPrice?'<div class="detail-price-old">'+p.oldPrice+'</div>':'')+'</div>'
+    +stockBadge
+    +'<div class="color-section"><label>Choose Colour <span class="color-name-display" id="cnDisp-'+id+'">'+(p.colors[0]?p.colors[0].name:'')+'</span></label>'
+    +'<div class="color-row" id="cbg-'+id+'">'+colorDots+'</div></div>'
+    +'<button class="detail-like-btn '+(isLiked(id)?'on':'')+'" data-dlk="'+id+'" onclick="toggleLike(\''+id+'\',event)">'+(isLiked(id)?'💜 Wishlisted':'🤍 Add to Wishlist')+'</button><br/>'
+    +'<div class="order-label" style="margin-top:.2rem">Order via</div>'
+    +'<div class="order-btns">'
+    +(p.sold
+      ?'<span style="font-size:.82rem;color:#e74c3c;font-weight:700">Currently out of stock — DM us to be notified!</span>'
+      :'<a class="btn btn-wa btn-sm" href="https://wa.me/2182783582?text=Hi+PrePro+Art!+I+want+to+order+the+'+p.wa+'" target="_blank">💬 WhatsApp</a>'
+      +'<a class="btn btn-ig btn-sm" href="https://instagram.com/sarcasticayuu" target="_blank">📷 Instagram</a>'
+    )
     +'</div>'
-    +'</div>';
+    +'<div class="detail-desc"><h4>About this piece ✿</h4><p>'+p.fullDesc+'</p><div class="specs-grid" style="margin-top:.8rem">'+specs+'</div></div>'
+    +'</div></div>';
 
-  initGallerySwipe();
-  // hide swipe hint after first swipe or 3s
-  setTimeout(()=>{const h=document.getElementById('swipeHint');if(h)h.classList.add('gone');},3000);
+  // init touch swiper on detail
+  initDetailSwipe(total);
+  // apply bg color to swiper from first color
+  if(p.colors&&p.colors[0]) applyColorBg(p.colors[0].hex, id);
 
-  const related=PRODS.filter(x=>x.id!==id&&x.cat===p.cat).slice(0,3);
-  document.getElementById('relatedGrid').innerHTML=related.map(cardHTML).join('');
+  // related
+  const rel=PRODS.filter(x=>x.id!==id&&x.cat===p.cat).slice(0,3);
+  const rg=document.getElementById('relGrid');
+  rg.innerHTML=rel.map(cardHTML).join('');
+  rel.forEach(rp=>{ if(rp.images&&rp.images.length>1) initCardSwipe(rp.id,rp.images.length); });
+
   showPage('product');
 }
 
-function goSlide(idx){
-  if(!_gProd) return;
-  const slides=_gProd.slides||[];
-  _gIdx=Math.max(0,Math.min(idx,slides.length-1));
-  const track=document.getElementById('galleryTrack'); if(!track) return;
-  track.style.transform='translateX(-'+(_gIdx*100)+'%)';
-  // update dots
-  document.querySelectorAll('#galDots .gallery-dot').forEach((d,i)=>d.classList.toggle('active',i===_gIdx));
-  // update label
-  const lbl=document.getElementById('slideLabel');
-  if(lbl&&slides[_gIdx]) lbl.textContent=slides[_gIdx].label;
-  // hide hint
-  const h=document.getElementById('swipeHint');if(h)h.classList.add('gone');
-}
-function galStep(dir){ goSlide(_gIdx+dir); }
-
-function initGallerySwipe(){
-  const outer=document.getElementById('galleryOuter'); if(!outer) return;
-  // Touch
-  outer.addEventListener('touchstart',e=>{_gStartX=e.touches[0].clientX;_gDragging=true;},{ passive:true});
-  outer.addEventListener('touchmove',e=>{if(!_gDragging)return;_gDeltaX=e.touches[0].clientX-_gStartX;},{passive:true});
-  outer.addEventListener('touchend',()=>{
-    if(!_gDragging)return; _gDragging=false;
-    if(_gDeltaX<-40) galStep(1);
-    else if(_gDeltaX>40) galStep(-1);
-    _gDeltaX=0;
-  });
-  // Mouse drag
-  outer.addEventListener('mousedown',e=>{_gStartX=e.clientX;_gDragging=true;outer.style.cursor='grabbing';});
-  outer.addEventListener('mousemove',e=>{if(!_gDragging)return;_gDeltaX=e.clientX-_gStartX;});
-  outer.addEventListener('mouseup',()=>{
-    if(!_gDragging)return; _gDragging=false; outer.style.cursor='';
-    if(_gDeltaX<-40) galStep(1);
-    else if(_gDeltaX>40) galStep(-1);
-    _gDeltaX=0;
-  });
-  outer.addEventListener('mouseleave',()=>{_gDragging=false;outer.style.cursor='';_gDeltaX=0;});
+function detailGoTo(n){
+  const total=detailImages.length||1;
+  detailCur=((n%total)+total)%total;
+  const sl=document.getElementById('dSlides');
+  if(sl) sl.style.transform='translateX(-'+detailCur*100+'%)';
+  document.querySelectorAll('#dDots .detail-dot').forEach((d,i)=>d.classList.toggle('on',i===detailCur));
+  document.querySelectorAll('#dThumbs .thumb').forEach((t,i)=>t.classList.toggle('on',i===detailCur));
 }
 
-function selectColor(ci){
-  if(!_gProd) return;
-  const c=_gProd.colors[ci]; if(!c) return;
-  // update dots
-  document.querySelectorAll('.color-dot').forEach((d,i)=>d.classList.toggle('active',i===ci));
-  // update name badge
-  const badge=document.getElementById('colorNameBadge');
-  if(badge){ badge.textContent=c.name; badge.style.background=c.hex; badge.style.color=isLight(c.hex)?'#3d1a55':'#fff'; }
-  // update gallery slide backgrounds to tint with selected color
-  const slides=_gProd.slides||[];
-  document.querySelectorAll('.gallery-slide').forEach((slide,i)=>{
-    const base=slides[i]?slides[i].bg:'linear-gradient(135deg,var(--pl),var(--pus))';
-    slide.style.background='linear-gradient(135deg,'+c.hex+'cc,'+c.hex+'66),'+base;
-  });
-  // update the main emoji display to reflect colour mood
-  showToast('Colour: '+c.name+' 🎨');
+function initDetailSwipe(total){
+  if(total<2) return;
+  const sw=document.getElementById('dSwiper'); if(!sw) return;
+  let startX=0, moved=0, isDrag=false;
+  sw.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;isDrag=true;moved=0;},{passive:true});
+  sw.addEventListener('touchmove',e=>{if(!isDrag)return;moved=e.touches[0].clientX-startX;},{passive:true});
+  sw.addEventListener('touchend',()=>{if(Math.abs(moved)>40){if(moved<0)detailGoTo(detailCur+1);else detailGoTo(detailCur-1);}isDrag=false;});
+  sw.addEventListener('mousedown',e=>{startX=e.clientX;isDrag=true;moved=0;e.preventDefault();});
+  sw.addEventListener('mousemove',e=>{if(!isDrag)return;moved=e.clientX-startX;});
+  sw.addEventListener('mouseup',()=>{if(Math.abs(moved)>40){if(moved<0)detailGoTo(detailCur+1);else detailGoTo(detailCur-1);}isDrag=false;});
+  sw.addEventListener('mouseleave',()=>{isDrag=false;});
 }
 
-function isLight(hex){
-  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
-  return (r*299+g*587+b*114)/1000>150;
+function pickColor(el,prodId){
+  const row=el.parentNode;
+  row.querySelectorAll('.cswatch').forEach(s=>s.classList.remove('on'));
+  el.classList.add('on');
+  const name=el.dataset.name||'';
+  const nd=document.getElementById('cnDisp-'+prodId);
+  if(nd) nd.textContent=name;
+  // actually change the swiper background to the selected color tint
+  applyColorBg(el.style.background, prodId);
 }
 
-function renderWishlist(){
-  const c=document.getElementById('wishlistContent');
-  const items=PRODS.filter(p=>isLiked(p.id));
-  if(!items.length){c.innerHTML='<div class="wishlist-empty"><span class="icon">🤍</span><p>Your wishlist is empty!<br/>Tap the heart on any product to save it here</p><button class="btn btn-primary" onclick="showPage(\'home\')">Browse Products 🛍️</button></div>';return;}
-  c.innerHTML='<div class="products-grid">'+items.map(cardHTML).join('')+'</div>';
+function applyColorBg(hex, prodId){
+  const sw=document.getElementById('dSwiper');
+  if(!sw) return;
+  // only change if there are no real images (emoji mode)
+  if(!detailImages.length){
+    sw.style.background='linear-gradient(135deg,'+hex+'55,'+hex+'22)';
+  }
 }
 
-/* ═══════════════════ CONFETTI ═══════════════════ */
+function renderWL(){
+  const c=document.getElementById('wlContent');
+  const items=PRODS.filter(p=>WL.includes(p.id));
+  if(!items.length){c.innerHTML='<div class="wl-empty"><span class="ei">🤍</span><p>Your wishlist is empty!<br/>Tap the heart on any product to save it here</p><button class="btn btn-primary" onclick="showPage(\'home\')" style="margin-top:1rem">Browse Products 🛍️</button></div>';return;}
+  c.innerHTML='<div class="prod-grid">'+items.map(cardHTML).join('')+'</div>';
+  items.forEach(p=>{if(p.images&&p.images.length>1)initCardSwipe(p.id,p.images.length);});
+}
+
+/* ═══════════════════════════════════════════════
+   CONFETTI
+═══════════════════════════════════════════════ */
 function doConfetti(){
-  const cols=['#f9c4d2','#c39bd3','#f05a9e','#9b59b6','#fde8f0','#f7c948'];
+  const cols=['#f9c4d2','#c39bd3','#f05a9e','#9b59b6','#f7c948','#fde8f0'];
   for(let i=0;i<28;i++){
-    const el=document.createElement('div');el.className='confetti-piece';
-    el.style.cssText='left:'+Math.random()*100+'vw;top:-10px;background:'+cols[Math.floor(Math.random()*cols.length)]+';animation-duration:'+(1.2+Math.random()*1.2)+'s;animation-delay:'+Math.random()*.4+'s;width:'+(6+Math.random()*8)+'px;height:'+(6+Math.random()*8)+'px;border-radius:'+(Math.random()>.5?'50%':'3px')+';position:fixed;pointer-events:none;z-index:9000;';
+    const el=document.createElement('div');el.className='cf';
+    el.style.cssText='left:'+Math.random()*100+'vw;top:-10px;background:'+cols[Math.floor(Math.random()*cols.length)]+';animation-duration:'+(1.1+Math.random()*1.2)+'s;animation-delay:'+Math.random()*.38+'s;width:'+(5+Math.random()*8)+'px;height:'+(5+Math.random()*8)+'px;border-radius:'+(Math.random()>.5?'50%':'3px')+';position:fixed;pointer-events:none;z-index:5000;';
     document.body.appendChild(el);setTimeout(()=>el.remove(),2600);
   }
 }
 
-/* ═══════════════════ CAT ═══════════════════ */
-const catMsgs=['Psst... check out our new items! 🌸','Meow! The Bestie Gift Set is so cute 💝','Every piece is made with love 💜','Click my profile icon to update your vibe! ✨','Your wishlist is waiting 🤍','Custom orders open! DM us 🌺','Nya~ come shop with me! 🐱','Did you check the Kawaii Birthday Box? 🎀'];
+/* ═══════════════════════════════════════════════
+   CAT
+═══════════════════════════════════════════════ */
+const catMsgs=['Psst... new items just dropped! 🌸','Meow! The Bestie Gift Set is soo cute 💝','Every piece is made with love 💜','Check your profile to update your vibe! ✨','Your wishlist is waiting 🤍','Custom orders open! DM us 🌺','Nya~ come shop with me! 🐱','Did you see the Kawaii Birthday Box? 🎀'];
 let catIdx=0;
 function catClick(){
-  const b=document.getElementById('catBubble');
-  const name=USER.name&&USER.name!=='Friend'?USER.name:'friend';
-  const msgs=[...catMsgs,'Hey '+name+'! Found something you like? 💜'];
-  b.textContent=msgs[catIdx%msgs.length];catIdx++;
-  b.classList.add('show');setTimeout(()=>b.classList.remove('show'),3200);
+  const b=document.getElementById('catBub');
+  const msgs=U.name&&U.name!=='Friend'?[...catMsgs,'Hey '+U.name+'! Found something you like? 💜']:catMsgs;
+  b.textContent=msgs[catIdx%msgs.length]; catIdx++;
+  b.classList.add('on'); setTimeout(()=>b.classList.remove('on'),3200);
   const c=document.getElementById('floatCat');
   c.textContent=['🐱','😺','😸','🐾','🐈'][Math.floor(Math.random()*5)];
-  setTimeout(()=>c.textContent='🐱',2200);
+  setTimeout(()=>c.textContent='🐱',2100);
 }
-setInterval(()=>{if(Math.random()<.3)catClick();},14000);
+setInterval(()=>{if(Math.random()<.28)catClick();},14000);
 
-/* ═══════════════════ SPARKLE ═══════════════════ */
+/* ═══════════════════════════════════════════════
+   SPARKLE
+═══════════════════════════════════════════════ */
 (function(){
-  const cv=document.getElementById('sparkleCanvas');if(!cv)return;
-  const ctx=cv.getContext('2d');let W,H,sparks=[];
+  const cv=document.getElementById('sparkC'); if(!cv)return;
+  const ctx=cv.getContext('2d'); let W,H,sparks=[];
   function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
-  resize();window.addEventListener('resize',resize);
-  function Spark(){this.x=Math.random()*W;this.y=Math.random()*H;this.r=1+Math.random()*2;this.life=0;this.maxLife=60+Math.random()*80;this.color=['#f9c4d2','#c39bd3','#f7c948','#ffffff'][Math.floor(Math.random()*4)];}
-  function loop(){ctx.clearRect(0,0,W,H);if(sparks.length<60)sparks.push(new Spark());sparks=sparks.filter(s=>s.life<s.maxLife);sparks.forEach(s=>{s.life++;const a=Math.sin(s.life/s.maxLife*Math.PI);ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.color;ctx.globalAlpha=a*.7;ctx.fill();ctx.globalAlpha=1;});requestAnimationFrame(loop);}
+  resize(); window.addEventListener('resize',resize);
+  function Spark(){this.x=Math.random()*W;this.y=Math.random()*H;this.r=.8+Math.random()*2;this.life=0;this.maxLife=55+Math.random()*75;this.c=['#f9c4d2','#c39bd3','#f7c948','#ffffff'][Math.floor(Math.random()*4)];}
+  function loop(){ctx.clearRect(0,0,W,H);if(sparks.length<55)sparks.push(new Spark());sparks=sparks.filter(s=>s.life<s.maxLife);sparks.forEach(s=>{s.life++;const a=Math.sin(s.life/s.maxLife*Math.PI);ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.c;ctx.globalAlpha=a*.65;ctx.fill();ctx.globalAlpha=1;});requestAnimationFrame(loop);}
   loop();
 })();
 
-/* ═══════════════════ PETALS ═══════════════════ */
+/* ═══════════════════════════════════════════════
+   PETALS
+═══════════════════════════════════════════════ */
 (function(){
   const lc=['#f9c4d2','#c39bd3','#f0a8c8','#d4a8e8','#fde8f0'];
   const dc=['#3a0d28','#220840','#2e0a48'];
   const bg=document.getElementById('petals-bg');
-  for(let i=0;i<22;i++){
+  for(let i=0;i<20;i++){
     const p=document.createElement('div');p.className='petal';
-    const isDark=document.documentElement.getAttribute('data-theme')==='dark';
-    const cols=isDark?dc:lc;const c=cols[Math.floor(Math.random()*cols.length)];
-    p.style.cssText='left:'+Math.random()*100+'%;background:'+c+';width:'+(8+Math.random()*14)+'px;height:'+(8+Math.random()*14)+'px;border-radius:'+(Math.random()>.5?'50% 0 50% 0':'50%')+';animation-duration:'+(10+Math.random()*14)+'s;animation-delay:'+(-Math.random()*18)+'s;';
+    const d=document.documentElement.getAttribute('data-theme')==='dark';
+    const cols=d?dc:lc; const c=cols[Math.floor(Math.random()*cols.length)];
+    p.style.cssText='left:'+Math.random()*100+'%;background:'+c+';width:'+(7+Math.random()*13)+'px;height:'+(7+Math.random()*13)+'px;animation-duration:'+(10+Math.random()*14)+'s;animation-delay:'+(-Math.random()*18)+'s;';
     bg.appendChild(p);
   }
 })();
 
-/* ═══════════════════ THEME ═══════════════════ */
-function toggleTheme(){const isDark=document.documentElement.getAttribute('data-theme')==='dark';document.documentElement.setAttribute('data-theme',isDark?'light':'dark');document.getElementById('themeBtn').textContent=isDark?'🌙':'☀️';localStorage.setItem('pp-theme',isDark?'light':'dark');}
+/* ═══════════════════════════════════════════════
+   THEME
+═══════════════════════════════════════════════ */
+function toggleTheme(){const d=document.documentElement.getAttribute('data-theme')==='dark';document.documentElement.setAttribute('data-theme',d?'light':'dark');document.getElementById('themeBtn').textContent=d?'🌙':'☀️';localStorage.setItem('pp-theme',d?'light':'dark');}
 (function(){const t=localStorage.getItem('pp-theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeBtn').textContent='☀️';}})();
 
-/* ═══════════════════ SCROLL ═══════════════════ */
-window.addEventListener('scroll',()=>{document.getElementById('scrollTop').classList.toggle('show',window.scrollY>360);});
-const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+/* ═══════════════════════════════════════════════
+   SCROLL
+═══════════════════════════════════════════════ */
+window.addEventListener('scroll',()=>{document.getElementById('sTop').classList.toggle('on',window.scrollY>340);});
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 
-/* ═══════════════════ INIT ═══════════════════ */
-renderProducts();
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+renderProds();
 updateBadge();
-checkOnboarding();
-// track visits for returning users
-if(USER.name){USER.visits=(USER.visits||0)+1;saveUser();}
+initOb();
+if(U.name){
+  document.getElementById('ob').classList.add('gone');
+  U.visits=(U.visits||0)+1; saveU();
+  applyUser();
+}
 </script>
 </body>
 </html>
